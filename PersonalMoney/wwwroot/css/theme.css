@@ -277,6 +277,7 @@ section {
     overflow: hidden;
     background: #e5e5e5;
     padding-bottom: 8vh;
+    min-height:100vh;
 }
 
 @media (max-width: 991px) {
