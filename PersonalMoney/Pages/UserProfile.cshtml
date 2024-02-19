@@ -1,0 +1,106 @@
+﻿@page
+@model PersonalMoney.Pages.UserProfileModel
+@{
+    <style>
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .custom-file-label {
+            overflow: hidden;
+        }
+
+        .btn-secondary {
+            margin-right: 10px;
+        }
+
+    </style>
+
+    <div id="pageTitle">
+        <nav>
+            <ol class="breadcrumb" style="cursor: pointer;">
+                <li class="breadcrumb-item">Settings</li>
+                <li class="breadcrumb-item active"><a href="/UserProfile">Profile</a></li>
+            </ol>
+        </nav>
+    </div>
+    
+
+    <section id="main-content" style="padding-top: 16px; min-height: 100vh;">
+        <div class="section__content section__content--p30">
+        <div class="container-fluid">
+        <h3 class="title-5 m-b-35">
+            Edit Profile
+        </h3>
+        <hr>
+        <div class="container bootstrap snippets bootdey" style="margin-top: 10px;">
+            <p style="color: red;">@Request.Query["mess"]</p>
+            <div class="row">
+               <div class="col-md-7 personal-info">
+                    <form action="/settings/profile" method="POST" id="edit-profile-form">
+                        <input type="text" style="display: none;" name="id" value="" readonly>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">First Name:</label>
+                            <div class="col-lg-8">
+                                <input class="form-control" type="text" name="firstName" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Last Name:</label>
+                            <div class="col-lg-8">
+                                <input class="form-control" type="text" name="lastName" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Email:</label>
+                            <div class="col-lg-8">
+                                <input class="form-control" type="text" name="email" value="" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Phone:</label>
+                            <div class="col-lg-8">
+                                <input class="form-control" type="number" name="phone" pattern="[0-9]{10,13}" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Address:</label>
+                            <div class="col-lg-8">
+                                <input class="form-control" type="text" name="address" value="">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card-body text-center">
+                       <img src="images/icon/avatar-big-01.jpg" alt="Avatar" class="rounded-circle mb-3" id="img-avatar" width="200" height="200">
+                        <form action="/settings/upload-avatar" method="POST" enctype="multipart/form-data">
+                            <div class="input-group mb-3">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="inputGroupFile" aria-describedby="inputGroupFileAddon" accept="image/*">
+                                    <label class="custom-file-label" for="inputGroupFile">
+                                        <h4 style="text-align:left; font-size:15px">Choose file</h4>
+                                    </label>
+                                </div>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon">Upload</button>
+                                </div>
+                            </div>
+                            <a href="#" class="btn btn-secondary btn-sm mb-2">Reset</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" style="text-align: center">
+                <input id="submit-edit-profile" type="button" value="Update" class="btn btn-primary">
+            </div>
+        </div>
+        </div>
+        </div>
+    </section>
+    <script src="@Url.Content("~/assets/javascript/editprofile.js")"></script>
+}
