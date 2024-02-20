@@ -1,0 +1,207 @@
+﻿@page
+@model PersonalMoney.Pages.BudgetModel
+@{
+}
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Tables</h1>
+    <div class="table-data__tool">
+        <div class="table-data__tool-left">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="rs-select2--light rs-select2--md">
+                        <select class="js-select2" name="property">
+                            <option selected="selected">All Categories</option>
+                            <option value="">Tien Luong</option>
+                            <option value="">Tien Lam Them</option>
+                            <option value="">Tien Thuong</option>
+                        </select>
+                        <div class="dropDownSelect2"></div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="input-group date" id="dateFromPicker">
+                        <input type="text" class="form-control" placeholder="From" aria-label="From" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="input-group date" id="dateToPicker">
+                        <input type="text" class="form-control" placeholder="To" aria-label="To" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-data__tool-right">
+            <button class="au-btn au-btn-icon au-btn--green au-btn--small">
+                <i class="zmdi zmdi-plus"></i>add budget
+            </button>
+        </div>
+
+    </div>
+    <div class="table-data__tool-search mt-2">
+        <div class="input-group" style="width:300px">
+            <input type="text" class="form-control bg-light border-0 small" placeholder="Search..." aria-label="Search" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="button">
+                    <i class="fas fa-search fa-sm"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Account</th>
+                            <th>Amount</th>
+                            <th>DateTime</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>Tien lam them thang 1</td>
+                            <td>Tien Luong</td>
+                            <td>1</td>
+                            <td>61</td>
+                            <td>1/1/2023</td>
+                            <td>
+                                <div class="table-data-feature">
+                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                        <i class="zmdi zmdi-edit"></i>
+                                    </button>
+                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                        <i class="zmdi zmdi-delete"></i>
+                                    </button>
+                                    <a asp-page="/DebtDetail" class="item" data-toggle="tooltip" data-placement="top" title="Detail">
+                                        <i class="zmdi zmdi-more"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Tien lam them thang 1</td>
+                            <td>Tien Luong</td>
+                            <td>1</td>
+                            <td>61</td>
+                            <td>1/1/2023</td>
+                            <td>
+                                <div class="table-data-feature">
+                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                        <i class="zmdi zmdi-edit"></i>
+                                    </button>
+                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                        <i class="zmdi zmdi-delete"></i>
+                                    </button>
+                                    <a asp-page="/DebtDetail" class="item" data-toggle="tooltip" data-placement="top" title="Detail">
+                                        <i class="zmdi zmdi-more"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Tien lam them thang 1</td>
+                            <td>Tien Luong</td>
+                            <td>1</td>
+                            <td>61</td>
+                            <td>1/1/2023</td>
+                            <td>
+                                <div class="table-data-feature">
+                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                        <i class="zmdi zmdi-edit"></i>
+                                    </button>
+                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                        <i class="zmdi zmdi-delete"></i>
+                                    </button>
+                                    <a asp-page="/DebtDetail" class="item" data-toggle="tooltip" data-placement="top" title="Detail">
+                                        <i class="zmdi zmdi-more"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Tien lam them thang 1</td>
+                            <td>Tien Luong</td>
+                            <td>1</td>
+                            <td>61</td>
+                            <td>1/1/2023</td>
+                            <td>
+                                <div class="table-data-feature">
+                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                        <i class="zmdi zmdi-edit"></i>
+                                    </button>
+                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                        <i class="zmdi zmdi-delete"></i>
+                                    </button>
+                                    <a asp-page="/DebtDetail" class="item" data-toggle="tooltip" data-placement="top" title="Detail">
+                                        <i class="zmdi zmdi-more"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Tien lam them thang 1</td>
+                            <td>Tien Luong</td>
+                            <td>1</td>
+                            <td>61</td>
+                            <td>1/1/2023</td>
+                            <td>
+                                <div class="table-data-feature">
+                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                        <i class="zmdi zmdi-edit"></i>
+                                    </button>
+                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                        <i class="zmdi zmdi-delete"></i>
+                                    </button>
+                                    <a asp-page="/DebtDetail" class="item" data-toggle="tooltip" data-placement="top" title="Detail">
+                                        <i class="zmdi zmdi-more"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Tien lam them thang 1</td>
+                            <td>Tien Luong</td>
+                            <td>1</td>
+                            <td>61</td>
+                            <td>1/1/2023</td>
+                            <td>
+                                <div class="table-data-feature">
+                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                        <i class="zmdi zmdi-edit"></i>
+                                    </button>
+                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                        <i class="zmdi zmdi-delete"></i>
+                                    </button>
+                                    <a asp-page="/DebtDetail" class="item" data-toggle="tooltip" data-placement="top" title="Detail">
+                                        <i class="zmdi zmdi-more"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /.container-fluid -->
