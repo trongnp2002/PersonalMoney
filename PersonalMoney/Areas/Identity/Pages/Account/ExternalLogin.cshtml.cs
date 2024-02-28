@@ -86,7 +86,7 @@ namespace PersonalMoney.Areas.Identity.Pages.Account
             [EmailAddress]
             public string Email { get; set; }
         }
-        
+
         public IActionResult OnGet() => RedirectToPage("./Login");
 
         public IActionResult OnPost(string provider, string returnUrl = null)
@@ -152,11 +152,70 @@ namespace PersonalMoney.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
+                var registedUser = await _userManager.FindByEmailAsync(Input.Email);
+                string externalEmail = null;
+                Models.User externalUser = null;
+                if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
+                {
+                    externalEmail = info.Principal.FindFirstValue(ClaimTypes.Email);
+                }
+                if (!String.IsNullOrEmpty(externalEmail))
+                {
+                    externalUser = await _userManager.FindByEmailAsync(externalEmail);
+                }
+                if (registedUser != null && externalUser != null)
+                {
+                    if (registedUser.Id.Equals(externalUser.Id))
+                    {
+                        var resultLink = await _userManager.AddLoginAsync(registedUser, info);
+                        if (resultLink.Succeeded)
+                        {
+                            await _signInManager.SignInAsync(registedUser, isPersistent: false);
+                            return LocalRedirect(returnUrl);
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Unable to link your account, please user another one!");
+                        return Page();
+                    }
+                }
+                    _logger.LogInformation("🚩 | user: ", registedUser == null ? "null" : registedUser.Email);
+                    _logger.LogInformation("🚩 | externalUser: ", externalUser == null ? "null" : externalUser.Email);
+
+                if ((externalUser != null) && (registedUser == null))
+                {
+                    ModelState.AddModelError(string.Empty, "Does not support creating new accounts with different emails from external services!");
+                    return Page();
+                }
+                // if((externalUser == null) && (externalEmail == Input.Email)) {
+                //      var newUser = new Models.User() {
+                //         UserName = externalEmail,
+                //         Email = externalEmail
+                //     };
+
+                //     var resultNewUser = await _userManager.CreateAsync(newUser);
+                //     if (resultNewUser.Succeeded)
+                //     {
+                //         await _userManager.AddLoginAsync(newUser, info);
+                //         var code = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
+                //         await _userManager.ConfirmEmailAsync(newUser, code);
+
+                //         await _signInManager.SignInAsync(newUser, isPersistent: false);
+
+                //         return LocalRedirect(returnUrl);
+
+                //     }
+                //     else
+                //     {
+                //         ModelState.AddModelError(string.Empty, "Cannot create new account!");
+                //         return Page();   
+                //     }
+                // }
                 var user = CreateUser();
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

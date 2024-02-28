@@ -19,8 +19,6 @@ namespace PersonalMoney.Models
         public string? LastName { get; set; } = null!;
         public string? AvatarUrl { get; set; } = null!;
         public string? Address { get; set; } = null!;
-     
-
         public virtual ICollection<Budget> Budgets { get; set; }
         public virtual ICollection<Category> Categories { get; set; }
         public virtual ICollection<Debtor> Debtors { get; set; }

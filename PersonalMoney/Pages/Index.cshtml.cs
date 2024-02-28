@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PersonalMoney.Models;
-
 namespace PersonalMoney.Pages
 {
+    [Authorize]
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
@@ -19,7 +20,6 @@ namespace PersonalMoney.Pages
 
         public void OnGet()
         {
-            var user = _context.Users.ToList();
         }
     }
 }

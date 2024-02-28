@@ -38,7 +38,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequiredUniqueChars = 1;
 
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.MaxFailedAccessAttempts = 3;
     options.Lockout.AllowedForNewUsers = true;
 
     options.User.AllowedUserNameCharacters =
@@ -47,8 +47,29 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.SignIn.RequireConfirmedEmail = true;
     options.SignIn.RequireConfirmedPhoneNumber = false;
 });
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/auth/signin";
+    options.LogoutPath = "/auth/signout";
+    options.AccessDeniedPath = "/403";
+});
 
-
+builder.Services.AddAuthentication()
+.AddGoogle(op =>
+{
+    var gConfig = builder.Configuration.GetSection("Authentication:Google");
+    op.ClientId = gConfig["ClientId"];
+    op.ClientSecret = gConfig["ClientSecret"];
+    op.CallbackPath = "/signin-google";
+})
+.AddFacebook(op =>
+{
+    var fConfig = builder.Configuration.GetSection("Authentication:Facebook");
+    op.ClientId = fConfig["ClientId"];
+    op.ClientSecret = fConfig["ClientSecret"];
+    op.CallbackPath = "/signin-facebook";
+})
+;
 
 var app = builder.Build();
 
@@ -64,8 +85,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseAuthorization();
-app.UseAuthentication();;
+app.UseAuthentication(); ;
 
 app.UseAuthorization();
 
