@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 */
 using PersonalMoney.Services;
 using PersonalMoney.Models;
+using ExceptionHandling.CustomMiddlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -83,7 +84,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseRouting();
 app.UseAuthentication(); ;
 

@@ -1,0 +1,49 @@
+@page
+@model PersonalMoney.Pages.TestPage
+@{
+    ViewData["Title"] = "TestPage";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div id="message" class="alert alert-primary d-none">
+
+</div>
+
+<button onclick="test()" class="btn btn-primary">Button</button>
+
+<script>
+    var message = document.getElementById("message");
+    var i = 1;
+    async function test() {
+        await getData();
+    }
+    async function getData() {
+
+        fetch('./TestPage?handler=Test&value=success',
+            {
+                method: "GET",
+    @* body: JSON.stringify(
+            {
+            name: "myname",
+            value: 1,
+            date:new Date()
+            }
+            ), *@
+            headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+
+        }
+        })
+         .then(function (res) { return res.json(); })
+        .then(function (data) {          
+           if(!data.success){
+             message.classList.add("alert-danger"); 
+           }
+           message.classList.remove("d-none");
+            message.innerHTML += `<p> ${i++} ${data.message}</p>`;
+           
+        });
+        }
+</script>
