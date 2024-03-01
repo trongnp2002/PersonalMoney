@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using FluentBuilder;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 
 namespace PersonalMoney.Models
 {
-    public  class User:IdentityUser
+    [AutoGenerateBuilder]
+    public class User : IdentityUser
     {
         public User()
         {
@@ -23,7 +25,7 @@ namespace PersonalMoney.Models
         public virtual ICollection<Category> Categories { get; set; }
         public virtual ICollection<Debtor> Debtors { get; set; }
         public virtual ICollection<Otp> Otps { get; set; }
-    
+
         public virtual ICollection<Wallet> Wallets { get; set; }
 
     }
