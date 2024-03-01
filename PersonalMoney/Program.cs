@@ -87,7 +87,7 @@ app.UseStaticFiles();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseRouting();
 app.UseAuthentication(); ;
-
+app.UseStatusCodePagesWithRedirects("/error/{0}");
 app.UseAuthorization();
 
 app.MapRazorPages();
