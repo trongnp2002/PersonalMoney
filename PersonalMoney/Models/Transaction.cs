@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using FluentBuilder;
 
 namespace PersonalMoney.Models
 {
+    [AutoGenerateBuilder]
     public partial class Transaction
     {
         public int Id { get; set; }
