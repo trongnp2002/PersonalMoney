@@ -1,12 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using PersonalMoney.Models;
 
 namespace PersonalMoney.Pages
 {
-    public class DebtDeatilModel : PageModel
+    public class DebtDeatilModel : BasePageModel
     {
-        public void OnGet()
+        public DebtDeatilModel(ILogger<TestPage> logger, PersonalMoneyContext dbContext) : base(logger, dbContext)
         {
         }
+
+
     }
 }

@@ -5,21 +5,24 @@ using PersonalMoney.Models;
 namespace PersonalMoney.Pages
 {
     [Authorize]
-    public class IndexModel : PageModel
+    public class IndexModel : BasePageModel
     {
         private readonly ILogger<IndexModel> _logger;
         private readonly PersonalMoneyContext _context;
 
-
-
-        public IndexModel(ILogger<IndexModel> logger, PersonalMoneyContext context)
+        public IndexModel(ILogger<TestPage> logger, PersonalMoneyContext dbContext) : base(logger, dbContext)
         {
-            _logger = logger;
-            _context = context;
         }
 
         public void OnGet()
         {
+            try
+            {
+                throw new ApplicationException();
+
+            }catch(Exception e){
+                Return500ErrorPage();
+            }
         }
     }
 }

@@ -1,12 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using PersonalMoney.Models;
 
 namespace PersonalMoney.Pages
 {
-    public class ChangePasswordModel : PageModel
+    public class ChangePasswordModel : BasePageModel
     {
-        public void OnGet()
+        public ChangePasswordModel(ILogger<TestPage> logger, PersonalMoneyContext dbContext) : base(logger, dbContext)
         {
         }
+
     }
 }
