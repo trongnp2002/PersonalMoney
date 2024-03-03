@@ -1,0 +1,129 @@
+﻿@page "/debtor/detail/{id:int}/debt/create"
+@model CreateModel
+@using PersonalMoney.PageDebt
+
+@{
+    ViewData["Title"] = "Add new debtor";
+    var user = ViewData[" debtorId"] as string;
+    
+}
+
+<style>
+    .classify-option {
+        display: inline-block;
+        width: 200px; /* Độ rộng mong muốn */
+        height: 35px; /* Chiều cao mong muốn */
+        text-align: center; /* Căn giữa nội dung theo chiều ngang */
+        line-height: 35px; /* Chiều cao dòng giống với chiều cao của khối */
+        border-radius: 17.5px; /* Để tạo góc cong là nửa chiều cao */
+        border: 1px solid #ccc; /* Đường viền */
+        cursor: pointer; /* Con trỏ chuột */
+        margin: 0 5px; /* Khoảng cách giữa các nút */
+    }
+
+   
+    .classifys-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+        .classify-option.active {
+            background-color: rgb(55, 184, 55);
+        }
+
+    .container span {
+        display: inline-block;
+        width: 300px;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        background-color: rgb(192, 181, 181);
+        border-radius: 7px;
+        color: white;
+        font-size: 24px;
+        margin: 0 5px;
+        cursor: pointer;
+    }
+</style>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <input type="hidden" asp-for="@Model.debt.DebtorId" />
+            <div class="form-group">
+                <label asp-for="@Model.debt.Note" class="control-label"></label>
+                <input asp-for="@Model.debt.Note" class="form-control" />
+                <span asp-validation-for="@Model.debt.Note" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.debt.Classify" class="control-label"></label><br />
+                <span class="classify-option" id="plus" onclick="selectOptions(true)">+</span>
+                <span class="classify-option" id="minus" onclick="selectOptions(false)">-</span>
+                <input type="hidden" id="classifyValue" field="*{classify}" name="classify" value="">
+                <br /><i>
+                    (+) add a debt
+                    to this person, (-) pay a debt or add a debt
+                    you borrow from this person
+                </i>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.debt.MoneyDebt" class="control-label"></label>
+                <input asp-for="@Model.debt.MoneyDebt" class="form-control" />
+                <span asp-validation-for="@Model.debt.MoneyDebt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.debt.DateDebt" class="control-label"></label>
+                <input asp-for="@Model.debt.DateDebt" class="form-control" />
+                <span asp-validation-for="@Model.debt.DateDebt" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a href="/debtor/details/debt/@user">Back to List</a>
+</div>
+
+<script>
+    function selectOptions(isPlus) {
+        var plusOption = document.getElementById("plus");
+        var minusOption = document.getElementById("minus");
+        var classifyValue = document.getElementById("classifyValue");
+
+        if (isPlus) {
+            plusOption.classList.add("active");
+            minusOption.classList.remove("active");
+            classifyValue.value = "true";
+        } else {
+            plusOption.classList.remove("active");
+            minusOption.classList.add("active");
+            classifyValue.value = "false";
+        }
+    }
+
+    function selectOption(isPlus, id) {
+        var plusOption = document.getElementById("plus" + id);
+        var minusOption = document.getElementById("minus" + id);
+        var classifyValue = document.getElementById("classifyValue" + id);
+
+        if (isPlus) {
+            plusOption.classList.add("active");
+            minusOption.classList.remove("active");
+            classifyValue.value = "true";
+        } else {
+            plusOption.classList.remove("active");
+            minusOption.classList.add("active");
+            classifyValue.value = "false";
+        }
+    }
+</script>
+
+
