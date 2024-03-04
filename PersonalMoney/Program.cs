@@ -1,17 +1,15 @@
-using Microsoft.AspNetCore.Identity.UI.Services;
+﻿using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-/*using PersonalMoney.Models;
-*/
-using PersonalMoney.Services;
 using PersonalMoney.Models;
+using PersonalMoney.Services;
 using ExceptionHandling.CustomMiddlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-
+builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<PersonalMoneyContext>(
     optionsAction =>
@@ -82,14 +80,29 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
+app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
+
+
+app.UseEndpoints(endpoints => endpoints.MapRazorPages());
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UseMiddleware<ExceptionHandlingMiddleware>();
-app.UseRouting();
-app.UseAuthentication(); ;
-app.UseStatusCodePagesWithRedirects("/error/{0}");
-app.UseAuthorization();
+//app.UseMiddleware<ExceptionHandlingMiddleware>();
+//app.UseStatusCodePagesWithRedirects("/error/{0}");
+
 
 app.MapRazorPages();
 
+
+
+
+
 app.Run();
+
+
+
+
+

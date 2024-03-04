@@ -1,0 +1,50 @@
+﻿@* @page "/debt/update/{id:int}"
+@model EditModel
+@using PersonalMoney.Pageg
+@{
+    ViewData["Title"] = "Update debtor";
+    // Layout = "/Views/Shared/_LayoutAdmin.cshtml";
+
+}
+<partial name="_AlertMessage" />
+
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <input type="hidden" asp-for="@Model.debtor.Id" />
+            <input type="hidden" asp-for="@Model.debtor.UserId" />
+            <div class="form-group">
+                <label asp-for="@Model.debtor.Name" class="control-label"></label>
+                <input asp-for="@Model.debtor.Name" class="form-control" />
+                <span asp-validation-for="@Model.debtor.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.debtor.Address" class="control-label"></label>
+                <textarea asp-for="@Model.debtor.Address" class="form-control"></textarea>
+                <span asp-validation-for="@Model.debtor.Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.debtor.Phone" class="control-label"></label>
+                <input asp-for="@Model.debtor.Phone" class="form-control" />
+                <span asp-validation-for="@Model.debtor.Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.debtor.Email" class="control-label"></label>
+                <input asp-for="@Model.debtor.Email" class="form-control" />
+                <span asp-validation-for="@Model.debtor.Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+ *@
