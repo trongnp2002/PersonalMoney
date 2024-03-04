@@ -56,14 +56,14 @@
             <input type="hidden" asp-for="@Model.debt.DebtorId" />
             <div class="form-group">
                 <label asp-for="@Model.debt.Note" class="control-label"></label>
-                <input asp-for="@Model.debt.Note" class="form-control" />
+                <textarea asp-for="@Model.debt.Note" class="form-control"></textarea>
                 <span asp-validation-for="@Model.debt.Note" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="@Model.debt.Classify" class="control-label"></label><br />
                 <span class="classify-option" id="plus" onclick="selectOptions(true)">+</span>
                 <span class="classify-option" id="minus" onclick="selectOptions(false)">-</span>
-                <input type="hidden" id="classifyValue" field="*{classify}" name="classify" value="">
+                <input type="hidden" id="classifyValue" asp-for="@Model.debt.Classify" name="classify" value="">
                 <br /><i>
                     (+) add a debt
                     to this person, (-) pay a debt or add a debt
@@ -127,3 +127,8 @@
 </script>
 
 
+@{
+    var summernote = new PersonalMoney.Models.Summernote("#debt_Note");
+}
+
+<partial name="_Summernote" model="summernote" />
