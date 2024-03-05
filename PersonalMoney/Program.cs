@@ -1,10 +1,8 @@
-using Microsoft.AspNetCore.Identity.UI.Services;
+﻿using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-/*using PersonalMoney.Models;
-*/
-using PersonalMoney.Services;
 using PersonalMoney.Models;
+using PersonalMoney.Services;
 using ExceptionHandling.CustomMiddlewares;
 using NLog;
 using NLog.Web;
@@ -17,6 +15,7 @@ try
     builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
     // Add services to the container.
     builder.Services.AddRazorPages();
+    builder.Services.AddControllersWithViews();
 
     builder.Logging.ClearProviders();
     builder.Host.UseNLog();
@@ -89,21 +88,22 @@ try
         app.UseHsts();
     }
 
+    app.UseRouting();
+    app.UseAuthentication();
+    app.UseAuthorization();
+    app.UseEndpoints(endpoints => endpoints.MapRazorPages());
+
     app.UseHttpsRedirection();
     app.UseStaticFiles();
     app.UseMiddleware<ExceptionHandlingMiddleware>();
-    app.UseRouting();
-    app.UseAuthentication();
     // app.UseStatusCodePagesWithRedirects("/error/{0}");
-    app.UseAuthorization();
-
     app.MapRazorPages();
 
     app.Run();
 }
 catch (Exception exception)
 {
-   logger.Error(exception, "Stopped program because of exception");
+    logger.Error(exception, "Stopped program because of exception");
     throw;
 }
 finally

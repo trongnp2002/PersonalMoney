@@ -1,0 +1,59 @@
+﻿@page "/debt/update/{id:int}"
+@model EditModel
+@using PersonalMoney.Pagegi
+@{
+    ViewData["Title"] = "Update debtor";
+    // Layout = "/Views/Shared/_LayoutAdmin.cshtml";
+
+}
+<partial name="_AlertMessage" />
+
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <input type="hidden" asp-for="@Model.debt.DebtorId" />
+            <div class="form-group">
+                <label asp-for="@Model.debt.Note" class="control-label"></label>
+                <textarea asp-for="@Model.debt.Note" class="form-control"></textarea>
+                <span asp-validation-for="@Model.debt.Note" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.debt.Classify" class="control-label"></label><br />
+                <span class="classify-option" id="plus" onclick="selectOptions(true)">+</span>
+                <span class="classify-option" id="minus" onclick="selectOptions(false)">-</span>
+                <input type="hidden" id="classifyValue" asp-for="@Model.debt.Classify" name="classify" value="">
+                <br /><i>
+                    (+) add a debt
+                    to this person, (-) pay a debt or add a debt
+                    you borrow from this person
+                </i>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.debt.MoneyDebt" class="control-label"></label>
+                <input asp-for="@Model.debt.MoneyDebt" class="form-control" />
+                <span asp-validation-for="@Model.debt.MoneyDebt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.debt.DateDebt" class="control-label"></label>
+                <input asp-for="@Model.debt.DateDebt" class="form-control" />
+                <span asp-validation-for="@Model.debt.DateDebt" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@{
+    var summernote = new PersonalMoney.Models.Summernote("#Note");
+}
+
+<partial name="_Summernote" model="summernote" />
