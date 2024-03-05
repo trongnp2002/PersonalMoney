@@ -11,7 +11,7 @@
         <div class="signup-content">
             <div class="signup-form">
                 <h2 class="signin-form-title">Sign up</h2>
-
+                <div asp-validation-summary="All" class="text-danger"></div>
                 <form method="POST" class="signin-register-form" id="register-form">
                     <span asp-validation-for="Input.FirstName" class="text-danger"></span>
                     <div class="signin-form-group">
@@ -29,8 +29,9 @@
                         <input asp-for="Input.Email" type="email" id="email" placeholder="Your Email" />
                     </div>
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    <span class="text-danger" id="spPass"></span>
                     <div class="signin-form-group">
-                        <label asp-for="Input.Password"><i class="zmdi zmdi-lock"></i></label>
+                        <label asp-for="Input.Password" id="lbPass"><i class="zmdi zmdi-lock"></i></label>
                         <input asp-for="Input.Password" type="password" id="pass" placeholder="Password" />
                     </div>
                     <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
@@ -53,7 +54,7 @@
                 <figure><img src="~/images/auth/signup-image.jpg" alt="sing up image"></figure>
                 <a href="/auth/signin" class="signup-image-link">I am already member</a>
                 <div style="margin-left: 52px;">
-                <partial name="_ExternalLoginPartial"></partial>
+                    <partial name="_ExternalLoginPartial"></partial>
                 </div>
             </div>
 
@@ -61,6 +62,39 @@
     </div>
 </section>
 
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+<script>
+    $(document).ready(function () {
+        const inputPassword = $('#pass');
+        const spPass = $('#spPass');
+
+        inputPassword.on('input', () => {
+            spPass.html('');
+            const passValue = inputPassword.val();
+            if (passValue.length < 8 || passValue.length > 16) {
+                return;
+            }
+            if (!/[a-z]/.test(passValue)) {
+                setTimeout(() => spPass.html("Password must contain at least 1 minuscule letter!"), 250)
+                return;
+            }
+            if (!/[0-9]/.test(passValue)) {
+                setTimeout(() => spPass.html("Password must contain at least 1 capital letter!"), 250)
+                return;
+            }
+            if (!/[A-Z]/.test(passValue)) {
+                setTimeout(() => spPass.html("Password must contain at least 1 capital letter!"), 250)
+                return;
+            }
+            if (!/[-._@@+]/.test(passValue)) {
+                setTimeout(() => spPass.html("Password must contain at least on of the following letter: -._@@+ "), 250)
+                
+                return;
+            }
+        });// Mã JavaScript của bạn ở đây
+    });
+
+</script>

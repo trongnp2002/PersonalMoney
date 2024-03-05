@@ -16,13 +16,13 @@ namespace PersonalMoney.Pages
 
         public void OnGet()
         {
-            try
-            {
-                throw new ApplicationException();
+            // try
+            // {
+            //     throw new Exception("test");
 
-            }catch(Exception e){
-                Return500ErrorPage();
-            }
+            // }catch(Exception e){
+            //     Return500ErrorPage();
+            // }
         }
     }
 }
