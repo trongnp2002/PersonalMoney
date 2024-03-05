@@ -18,7 +18,7 @@ namespace PersonalMoney.Pages
         {
             // try
             // {
-            //     throw new ApplicationException();
+            //     throw new Exception("test");
 
             // }catch(Exception e){
             //     Return500ErrorPage();
