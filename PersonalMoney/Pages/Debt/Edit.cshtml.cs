@@ -1,74 +1,75 @@
-﻿//using Microsoft.AspNetCore.Identity;
-//using Microsoft.AspNetCore.Mvc;
-//using Microsoft.AspNetCore.Mvc.RazorPages;
-//using Microsoft.AspNetCore.Mvc.Rendering;
-//using Microsoft.EntityFrameworkCore;
-//using PersonalMoney.Models;
-//using System;
-//using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using PersonalMoney.Models;
+using System;
+using System.Threading.Tasks;
 
-//namespace PersonalMoney.Pageg
-//{
-//    public class EditModel : PageModel
-//    {
-//        private readonly PersonalMoneyContext _context;
-//        private readonly UserManager<User> _userManager;
+namespace PersonalMoney.Pagegi
+{
+    public class EditModel : PageModel
+    {
+        private readonly PersonalMoneyContext _context;
+        private readonly UserManager<User> _userManager;
 
-//        [BindProperty]
-//        public Debtor debtor { get; set; }
+        [BindProperty]
+        public DebtDetail debt { get; set; }
 
-//        [TempData]
-//        public string StatusMessage { get; set; }
-//        public EditModel(PersonalMoneyContext context, UserManager<User> userManager)
-//        {
-//            _context = context;
-//            _userManager = userManager;
-//        }
+        [TempData]
+        public string StatusMessage { get; set; }
+        public EditModel(PersonalMoneyContext context, UserManager<User> userManager)
+        {
+            _context = context;
+            _userManager = userManager;
+        }
 
-//        public void OnGet(int id)
-//        {
-//            var user = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
-//            List<Debtor> lst = new List<Debtor>();
+        public void OnGet(int id)
+        {
+            var user = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
 
+            var de = _context.DebtDetails.FirstOrDefault(d => d.Id == id);
 
-//            var deb = _context.Debtors.FirstOrDefault(d => d.Id == id);
+            if (de != null)
+            {
+                debt = de;
+            }
+            else
+            {
+                StatusMessage = "Debt not exits!";
+            }
 
-//            if (deb != null)
-//            {
-//                debtor = deb;
-//            }
-//            else
-//            {
-//                StatusMessage = "Debtor not exits!";
-//            }
-
-//        }
+        }
 
 
-//        public async Task<IActionResult> OnPostAsync()
-//        {
-//            //if (!ModelState.IsValid)
-//            //{
-//            //    return Page();
-//            //}
-//            var debUpdate = _context.Debtors.FirstOrDefault(d => d.Id == debtor.Id);
+        public async Task<IActionResult> OnPostAsync(bool confirmDelete = false)
+        {
+            //if (!ModelState.IsValid)
+            //{
+            //    return Page();
+            //}
+            if (!confirmDelete)
+            {
+                return RedirectToPage("/debtor/details/debt/" + debt.DebtorId);
+            }
+            var debtUpdate = _context.DebtDetails.FirstOrDefault(d => d.Id == debt.Id);
 
-//            if (debUpdate != null)
-//            {
-//                debUpdate.Name = debtor.Name;
-//                debUpdate.Address = debtor.Address;
-//                debUpdate.Phone = debtor.Phone;
-//                debUpdate.Email = debtor.Email;
+            if (debtUpdate != null)
+            {
+                debtUpdate.Note = debt.Note;
+                debtUpdate.Classify = debt.Classify;
+                debtUpdate.MoneyDebt = debt.MoneyDebt;
+                debtUpdate.DateDebt = debt.DateDebt;
 
-//                debUpdate.DateUpdate = DateTime.Now;
-//                _context.Debtors.Update(debUpdate);
-//                await _context.SaveChangesAsync();
-//                StatusMessage = "Update a debtor successfully!";
-//                return RedirectToPage("/debtor/index");
-//            }
+                _context.DebtDetails.Update(debtUpdate);
+                await _context.SaveChangesAsync();
+                StatusMessage = "Update a debt successfully!";
+                return RedirectToPage("/debtor/details/debt/" + debtUpdate.DebtorId);
+            }
 
-//            StatusMessage = "Debtor not exists!";
-//            return Page();
-//        }
-//    }
-//}
+            StatusMessage = "Update debt fail!";
+            return Page();
+        }
+    }
+}

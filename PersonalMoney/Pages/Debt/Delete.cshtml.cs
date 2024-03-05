@@ -1,60 +1,60 @@
-//using Microsoft.AspNetCore.Identity;
-//using Microsoft.AspNetCore.Mvc;
-//using Microsoft.AspNetCore.Mvc.RazorPages;
-//using PersonalMoney.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using PersonalMoney.Models;
 
-//namespace PersonalMoney.Pagesg
-//{
-//    public class DeleteModel : PageModel
-//    {
-//        private readonly PersonalMoneyContext _context;
-//        private readonly UserManager<User> _userManager;
-
-
-//        public DeleteModel(PersonalMoneyContext context, UserManager<User> userManager)
-//        {
-//            _context = context;
-//            _userManager = userManager;
-//        }
-
-//        [TempData]
-//        public string StatusMessage { get; set; }
-
-//        [BindProperty]
-//        public Debtor debtor { get; set; }
+namespace PersonalMoney.Pagesgg
+{
+    public class DeleteModel : PageModel
+    {
+        private readonly PersonalMoneyContext _context;
+        private readonly UserManager<User> _userManager;
 
 
-//        public IActionResult OnGet(int id)
-//        {
-//            var debt = _context.Debtors.FirstOrDefault(mo => mo.Id == id);
+        public DeleteModel(PersonalMoneyContext context, UserManager<User> userManager)
+        {
+            _context = context;
+            _userManager = userManager;
+        }
 
-//            if (debt != null)
-//            {
-//                debtor = debt;
-//            }
-//            else
-//            {
-//                StatusMessage = "Debtor not exists!";
-//            }
+        [TempData]
+        public string StatusMessage { get; set; }
 
-//            return Page();
-//        }
+        [BindProperty]
+        public DebtDetail debt { get; set; }
 
-//        public IActionResult OnPost(int id)
-//        {
-//            if (id != null)
-//            {
-//                var p = _context.Debtors.FirstOrDefault(mo => mo.Id == id);
-//                if (p != null)
-//                {
-//                    _context.Debtors.Remove(p);
-//                    _context.SaveChanges();
-//                    StatusMessage = "Deleted a debtor successfully!";
-//                    return RedirectToPage("/debtor/index");
-//                }
-//            }
 
-//            return NotFound();
-//        }
-//    }
-//}
+        public IActionResult OnGet(int id)
+        {
+            var de = _context.DebtDetails.FirstOrDefault(mo => mo.Id == id);
+
+            if (de != null)
+            {
+                debt = de;
+            }
+            else
+            {
+                StatusMessage = "Debtor not exists!";
+            }
+            ViewData["debtorId"] = id.ToString();
+            return Page();
+        }
+
+        public IActionResult OnPost(int id)
+        {
+            if (id != null)
+            {
+                var p = _context.Debtors.FirstOrDefault(mo => mo.Id == id);
+                if (p != null)
+                {
+                    _context.Debtors.Remove(p);
+                    _context.SaveChanges();
+                    StatusMessage = "Deleted a debtor successfully!";
+                    return RedirectToPage("/debtor/index");
+                }
+            }
+
+            return NotFound();
+        }
+    }
+}
