@@ -13,17 +13,16 @@ $(document).ready(
                     (data) => {
                         if (data.success) {
                             ClosePopUp('#popupRoleCreate')
-                            createStatusMessageBox(data,'#role__table',5000);
+                            createStatusMessageBox(data, '#role__table', 5000);
                             reloadPage();
-                        }else{
-                            createStatusMessageBox(data,'#role_form-create',5000);
+                        } else {
+                            createStatusMessageBox(data, '#role_form-create', 5000);
                         }
 
 
                     }
                 ).finally(() => {
                     inputCreate.val('');
-                    addOnclickForClasses('.role__popup__update');
                 })
             // .catch(error => console.log(error.message))
         });
@@ -35,25 +34,23 @@ $(document).ready(
                 (data) => {
                     if (data.success) {
                         ClosePopUp('#popupRoleUpdate')
-                        createStatusMessageBox(data,'#role__table',5000);
+                        createStatusMessageBox(data, '#role__table', 5000);
                         reloadPage();
                     } else {
-                        createStatusMessageBox(data,'#role_form-update',5000);
+                        createStatusMessageBox(data, '#role_form-update', 5000);
                     }
                 }
             )
                 .finally(() => {
                     roleUpdate.OnRefresh();
                     inputRoleName.val('');
-                    addOnclickForClasses('.role__popup__update');
                     console.log(roleUpdate);
                 })
 
 
         });
-
-        addOnclickForClasses('.role__popup__update');
-        const createStatusMessageBox = (data,id,time)=>{
+        addOnclickForClasses('.role__popup__update')
+        const createStatusMessageBox = (data, id, time) => {
             const alertDiv = statusMessage(data.success, data.message)
             $(id).prepend(alertDiv);
             setTimeout(function () {
@@ -61,10 +58,12 @@ $(document).ready(
             }, time);
         }
         const reloadPage = () => {
-            onGetData().then(response => { console.log(response.data); regenerateTableBody(response.data); }
+            onGetData().then(response => {
+                console.log(response.data); regenerateTableBody(response.data); addOnclickForClasses('.role__popup__update');
+            }
             );
         }
     }
-    
+
 )
 
