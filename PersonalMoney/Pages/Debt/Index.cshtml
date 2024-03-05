@@ -1,0 +1,130 @@
+﻿@page "/debtor/details/debt/{id:int}"
+@model IndexModel
+@using PersonalMoney.Pagesdebt
+@{
+    // ViewData["Title"] = "Danh sach Blog";
+    var lstDebts = ViewData["lstDebt"] as List<PersonalMoney.Models.DebtDetail>;
+    var nameDebtor = ViewData["debtorName"] as string;
+
+}
+
+<partial name="_AlertMessage" />
+
+<div class="main-content">
+    <div class="section__content section__content--p30">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- DATA TABLE -->
+                    <h3 class="title-5 m-b-35">
+                        @Model.debtor.Name
+                    </h3>
+                    <p>Total: 555$</p>
+
+                    <div class="table-data__tool">
+                        <div class="table-data__tool-left">
+                            <div class="rs-select2--light rs-select2--md">
+                                <select class="js-select2" name="property">
+                                    <option selected="selected">All Properties</option>
+                                    <option value="">Option 1</option>
+                                    <option value="">Option 2</option>
+                                </select>
+                                <div class="dropDownSelect2"></div>
+                            </div>
+                            <div class="rs-select2--light rs-select2--sm">
+                                <select class="js-select2" name="time">
+                                    <option selected="selected">Today</option>
+                                    <option value="">3 Days</option>
+                                    <option value="">1 Week</option>
+                                </select>
+                                <div class="dropDownSelect2"></div>
+                            </div>
+                            <button class="au-btn-filter">
+                                <i class="zmdi zmdi-filter-list"></i>filters
+                            </button>
+                        </div>
+                        <div class="table-data__tool-right">
+
+                            <a href="/debtor/detail/@Model.debtor.Id/debt/create" class="au-btn au-btn-icon au-btn--green au-btn--small">
+                                <i class="zmdi zmdi-plus"></i>add new debt
+                            </a>
+
+                            <a href="/debtor/list-all" class="au-btn au-btn-icon au-btn--green au-btn--small">
+                                Back to list
+                            </a>
+
+                        </div>
+
+                    </div>
+                    <div class="table-responsive table-responsive-data2">
+                        <table class="table table-data2">
+                            <thead>
+
+                                <tr>
+                                    <th>Id</th>
+                                    <th>From account</th>
+                                    <th>Note</th>
+                                    <th>Classify</th>
+                                    <th>Money Debt</th>
+                                    <th>Start Date</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @if (lstDebts.Count > 0)
+                                {
+                                    @foreach (var item in lstDebts)
+                                    {
+                                        <tr class="tr-shadow">
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Id)
+                                            </td>
+
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Wallet.Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Note)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Classify)
+                                            </td>
+
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.MoneyDebt)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.DateDebt)
+                                            </td>
+                                         
+                                            <td>
+                                                <div class="table-data-feature">
+                                                    <a href="/debt/update/@item.Id" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                                        <i class="zmdi zmdi-edit"></i>
+                                                    </a>
+                                                    <a href="/debt/delete/@item.Id" class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                        <i class="zmdi zmdi-delete"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <h3>No data</h3>
+                                }
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                    <!-- END DATA TABLE -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

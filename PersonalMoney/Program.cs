@@ -1,10 +1,8 @@
-using Microsoft.AspNetCore.Identity.UI.Services;
+﻿using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-/*using PersonalMoney.Models;
-*/
-using PersonalMoney.Services;
 using PersonalMoney.Models;
+using PersonalMoney.Services;
 using ExceptionHandling.CustomMiddlewares;
 using NLog;
 using NLog.Web;
