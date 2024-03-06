@@ -18,6 +18,13 @@ namespace PersonalMoney.Pages
 
         public void OnGet()
         {
+            // try
+            // {
+            //     throw new Exception("test");
+
+            // }catch(Exception e){
+            //     Return500ErrorPage();
+            // }
             
             if (_context != null)
             {

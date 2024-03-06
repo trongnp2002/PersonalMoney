@@ -1,7 +1,8 @@
 using System.Net;
 using System.Text.Json;
 using Newtonsoft.Json;
-using PersonalMoney.dto.Responses;
+using NLog;
+using PersonalMoney.Models.Response;
 
 namespace ExceptionHandling.CustomMiddlewares;
 
@@ -33,7 +34,7 @@ public class ExceptionHandlingMiddleware
         context.Response.ContentType = "application/json";
         var response = context.Response;
 
-        var errorResponse = new ResponseDTO
+        var errorResponse = new ResponseApi<string>
         {
             Success = false
         };
@@ -54,7 +55,7 @@ public class ExceptionHandlingMiddleware
                 errorResponse.Message = "Internal server error!";
                 break;
         }
-        _logger.LogError(exception.Message);
+        _logger.LogError($"🚩 ILogger1 | {exception.Message}");
         var result = JsonConvert.SerializeObject(errorResponse);
         await context.Response.WriteAsync(result);
     }

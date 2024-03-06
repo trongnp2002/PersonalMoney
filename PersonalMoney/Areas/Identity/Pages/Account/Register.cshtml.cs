@@ -31,6 +31,7 @@ namespace PersonalMoney.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly PersonalMoneyContext _personalMoneyContext;
+        private RoleManager<IdentityRole> _roleManager;
 
         public RegisterModel(
             UserManager<User> userManager,
@@ -38,7 +39,8 @@ namespace PersonalMoney.Areas.Identity.Pages.Account
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            PersonalMoneyContext personalMoneyContext)
+            PersonalMoneyContext personalMoneyContext,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -47,6 +49,7 @@ namespace PersonalMoney.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _personalMoneyContext = personalMoneyContext;
+            _roleManager = roleManager;
         }
 
         /// <summary>
@@ -75,12 +78,10 @@ namespace PersonalMoney.Areas.Identity.Pages.Account
         public class InputModel
         {
 
-            [Required]
             [StringLength(15, ErrorMessage = "The {0} must be at max {1} characters long.")]
             [Display(Name = "FirstName")]
             public string FirstName { get; set; }
 
-            [Required]
             [StringLength(15, ErrorMessage = "The {0} must be at max {1} characters long.")]
             [Display(Name = "LastName")]
             public string LastName { get; set; }
@@ -148,7 +149,7 @@ namespace PersonalMoney.Areas.Identity.Pages.Account
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
+                    await CheckAndCreateRole(user);
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
@@ -166,7 +167,7 @@ namespace PersonalMoney.Areas.Identity.Pages.Account
             }
 
             // If we got this far, something failed, redisplay form
-           if(_personalMoneyContext.Users.FirstOrDefault(u => u.Email.Equals(Input.Email)) != null)
+            if (_personalMoneyContext.Users.FirstOrDefault(u => u.Email.Equals(Input.Email)) != null)
             {
                 ViewData["error"] = "duplicate";
             }
@@ -194,6 +195,18 @@ namespace PersonalMoney.Areas.Identity.Pages.Account
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
             return (IUserEmailStore<User>)_userStore;
+        }
+
+        private async Task<User> CheckAndCreateRole(User user)
+        {
+            var userRoleExists = await _roleManager.RoleExistsAsync("User");
+            if (!userRoleExists)
+            {
+                await _roleManager.CreateAsync(new IdentityRole("User"));
+            }
+            await _userManager.AddToRoleAsync(user, "User");
+
+            return user;
         }
     }
 }

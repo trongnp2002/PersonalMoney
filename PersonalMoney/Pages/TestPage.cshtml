@@ -11,6 +11,43 @@
 </div>
 
 <button onclick="test()" class="btn btn-primary">Button</button>
+   <button type="button" class="btn btn-success m-b-30" data-toggle="modal" data-target="#popupRoleCreate">
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                    Add more
+                </button>
+
+                <div class="modal fade" id="popupRoleCreate" tabindex="-1" role="dialog" aria-labelledby="popupRoleCreate"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Create Roles</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="post">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col">
+              <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+              <div class="form-group">
+                <span class="text-danger" ></span>
+                <label ></label>
+                <input  type="text" name="name" class="form-control">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
 
 <script>
     var message = document.getElementById("message");
@@ -20,7 +57,7 @@
     }
     async function getData() {
 
-        fetch('./TestPage?handler=Test&value=success',
+        fetch('./TestPage?handler=Test&value=fail',
             {
                 method: "GET",
     @* body: JSON.stringify(
