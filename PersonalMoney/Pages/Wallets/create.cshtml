@@ -1,0 +1,18 @@
+﻿@page "/createwallet"
+@model PersonalMoney.Pages.Wallets.createModel
+@{
+    ViewData["Title"] = "Add new wallet";
+}
+<form method="post">
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" class="form-control" id="name" name="Wallet.Name" required>
+        <span asp-validation-for="Wallet.Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="balance">Balance:</label>
+        <input type="number" class="form-control" id="balance" name="Wallet.Balance" required>
+        <span asp-validation-for="Wallet.Balance" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Wallet</button>
+</form>

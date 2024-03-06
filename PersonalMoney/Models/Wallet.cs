@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using FluentBuilder;
+using System.ComponentModel.DataAnnotations;
 
 namespace PersonalMoney.Models
 {
@@ -15,7 +16,10 @@ namespace PersonalMoney.Models
 
         public int Id { get; set; }
         public string UserId { get; set; } = null!;
+        [Required(ErrorMessage = "Name is required.")]
         public string Name { get; set; } = null!;
+        [Required(ErrorMessage = "Balance is required.")]
+        [Range(0.01, double.MaxValue, ErrorMessage = "Balance must be greater than 0.")]
         public decimal Balance { get; set; }
         public bool? IsActive { get; set; }
 

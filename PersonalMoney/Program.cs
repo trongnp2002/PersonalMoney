@@ -10,14 +10,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
-
 builder.Services.AddDbContext<PersonalMoneyContext>(
     optionsAction =>
     {
         optionsAction.UseSqlServer(builder.Configuration.GetConnectionString("DBConnect"));
     }
     );
-
+builder.Services.AddSession();
 /*builder.Services.AddDefaultIdentity<User>()
     .AddEntityFrameworkStores<PersonalMoneyContext>();*/
 builder.Services.AddOptions();
@@ -85,6 +84,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseSession();
 
 app.UseEndpoints(endpoints => endpoints.MapRazorPages());
 
@@ -95,7 +95,6 @@ app.UseStaticFiles();
 
 
 app.MapRazorPages();
-
 
 
 
