@@ -7,16 +7,38 @@
 For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    var listWallet = ViewData["listWallet"] as List<PersonalMoney.Models.Wallet>;
 }
 <header class="header-desktop2">
     <div class="section__content section__content--p30">
         <div class="container-fluid">
-            <div class="header-wrap2">
+            <div class="header-wrap2 justify-content-between">
+                <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        choose wallets
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        @if (listWallet != null && listWallet.Count > 0)
+                        {
+                            foreach (var wallet in listWallet)
+                            {
+                                <li>
+                                    <form method="post" asp-page-handler="SelectWallet" asp-route-walletId="@wallet.Id">
+                                        <button type="submit" class="btn-link">
+                                            @Html.DisplayFor(modelItem => wallet.Name)
+                                        </button>
+                                    </form>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
                 <div class="logo d-block d-lg-none">
                     <a href="#">
                         <img src="images/icon/logo-white.png" alt="CoolAdmin" />
                     </a>
-                </div>
+                </div>   
                 <div class="header-button2">
                     <div class="header-button-item js-item-menu">
                         <i class="zmdi zmdi-search"></i>

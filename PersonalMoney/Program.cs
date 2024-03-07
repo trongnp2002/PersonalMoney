@@ -14,6 +14,7 @@ try
     var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
     // Add services to the container.
+    builder.Services.AddSession();
     builder.Services.AddRazorPages();
     builder.Services.AddControllersWithViews();
 
@@ -92,7 +93,7 @@ try
     app.UseAuthentication();
     app.UseAuthorization();
     app.UseEndpoints(endpoints => endpoints.MapRazorPages());
-
+    app.UseSession();
     app.UseHttpsRedirection();
     app.UseStaticFiles();
     app.UseMiddleware<ExceptionHandlingMiddleware>();
