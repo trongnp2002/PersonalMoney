@@ -13,7 +13,6 @@ namespace PersonalMoney.Pages
 
         public IndexModel(ILogger<TestPage> logger, PersonalMoneyContext dbContext) : base(logger, dbContext)
         {
-            _context = dbContext;
         }
 
         public void OnGet()
@@ -25,11 +24,6 @@ namespace PersonalMoney.Pages
             // }catch(Exception e){
             //     Return500ErrorPage();
             // }
-            
-            if (_context != null)
-            {
-                ViewData["listWallet"] = _context.Wallets.ToList();
-            }
         }
         public IActionResult OnPostSelectWallet(int walletId)
         {
