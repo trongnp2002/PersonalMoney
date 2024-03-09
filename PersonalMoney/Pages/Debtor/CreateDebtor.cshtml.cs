@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PersonalMoney.Models;
 using System;
+using System.Numerics;
 using System.Threading.Tasks;
 
 namespace PersonalMoney.Pagesg
@@ -50,7 +51,7 @@ namespace PersonalMoney.Pagesg
 
             debtor.DateCreate = DateTime.Now;
             debtor.DateUpdate = DateTime.Now;
-
+            debtor.TotalMoney = 0;
 
             _context.Debtors.Add(debtor);
             _context.SaveChanges();

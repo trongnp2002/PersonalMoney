@@ -31,6 +31,7 @@ namespace PersonalMoney.Models
         public string Email { get; set; } = null!;
         public DateTime DateCreate { get; set; }
         public DateTime DateUpdate { get; set; }
+        public decimal? TotalMoney { get; set; }
 
         public virtual User User { get; set; } = null!;
         public virtual ICollection<DebtDetail> DebtDetails { get; set; }

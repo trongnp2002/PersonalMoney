@@ -5,12 +5,12 @@
     // ViewData["Title"] = "Danh sach Blog";
     var lstDebts = ViewData["lstDebt"] as List<PersonalMoney.Models.DebtDetail>;
     var nameDebtor = ViewData["debtorName"] as string;
-
+    var id = ViewData["ids"] as int?;
 }
 
 <partial name="_AlertMessage" />
 
-<div class="main-content">
+<div class="main-content" style="padding-top: 50px;min-height: 75vh;">
     <div class="section__content section__content--p30">
         <div class="container-fluid">
             <div class="row">
@@ -23,25 +23,52 @@
 
                     <div class="table-data__tool">
                         <div class="table-data__tool-left">
-                            <div class="rs-select2--light rs-select2--md">
-                                <select class="js-select2" name="property">
-                                    <option selected="selected">All Properties</option>
-                                    <option value="">Option 1</option>
-                                    <option value="">Option 2</option>
-                                </select>
-                                <div class="dropDownSelect2"></div>
-                            </div>
-                            <div class="rs-select2--light rs-select2--sm">
-                                <select class="js-select2" name="time">
-                                    <option selected="selected">Today</option>
-                                    <option value="">3 Days</option>
-                                    <option value="">1 Week</option>
-                                </select>
-                                <div class="dropDownSelect2"></div>
-                            </div>
-                            <button class="au-btn-filter">
-                                <i class="zmdi zmdi-filter-list"></i>filters
-                            </button>
+                            <form method="post" id="filterForm">
+                                <input type="hidden" name="id" value="@id" />
+                                <div class="input-group" style="display: flex; flex-wrap: wrap;">
+                                    <div style="flex: 1;">
+                                        <select id="filterType" name="filterType" class="form-control mb-3"
+                                                style="border-radius: 15px; width: 150px;">
+                                            <option value="total" selected="@(Model.FilterType  == "total")">Total Money</option>
+                                            <option value="date" selected="@(Model.FilterType == "date")">Date Start</option>
+                                        </select>
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <input type="hidden" name="nameDebtor" value="${nameDebtor}">
+                                        <div id="filterValueContainer">
+                                            <div id="rangeContainer" classappend="@((Model.FilterType == "date") ? "active" : "")">
+                                                <div class="input-row" style="display: flex;">
+                                                    <input type="number" id="filterValueStart" name="filterValueStart"
+                                                           class="form-control"
+                                                           style="border-radius: 15px; width: 200px;"
+                                                           placeholder="From" value="@Model.FilterValueStart">
+                                                    <span class="separator" style="margin: 0 10px;">-</span>
+                                                    <input type="number" id="filterValueEnd" name="filterValueEnd"
+                                                           class="form-control"
+                                                           style="border-radius: 15px; width: 200px;" placeholder="To"
+                                                           value="@Model.FilterValueEnd">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="flex: 1; padding-left:15px">
+                                        <input type="hidden" name="link" value="">
+                                        <button type="submit" id="searchButton" class="btn btn-secondary"
+                                                style="border-radius: 15px;">
+                                            <i class="fas fa-search"></i> Filter
+                                        </button>
+                                    </div>
+                                    <div style="flex: 1;padding-left:5px">
+                                        <button type="button" id="clearButton" class="btn btn-secondary"
+                                                style="border-radius: 15px;">
+                                            <i class="fas fa-times"></i> Clear Filter
+                                        </button>
+                                    </div>
+                                </div>
+                                <div style="margin-left: 20px;">
+                                    <span style="color: red;" id="errorSpan"></span>
+                                </div>
+                            </form>
                         </div>
                         <div class="table-data__tool-right">
 
@@ -85,10 +112,17 @@
                                                 @Html.DisplayFor(modelItem => item.Wallet.Name)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Note)
+                                                @Html.Raw(item.Note)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Classify)
+                                                @if (item.Classify)
+                                                {
+                                                    @:+
+                                                }
+                                                else
+                                                {
+                                                    @:-
+                                                }
                                             </td>
 
                                             <td>
@@ -103,7 +137,7 @@
                                                     <a href="/debt/update/@item.Id" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
                                                         <i class="zmdi zmdi-edit"></i>
                                                     </a>
-                                                    <a href="/debt/delete/@item.Id" class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                    <a href="/debt/delete/@item.Id" class="item delete-link" data-toggle="tooltip" data-placement="top" title="Delete">
                                                         <i class="zmdi zmdi-delete"></i>
                                                     </a>
                                                 </div>
@@ -126,5 +160,46 @@
         </div>
     </div>
 </div>
+<partial name="_Paging" model="@ViewBag.pagingModel" />
+<script>
 
+          var inputValueStart = "@Model.FilterValueStart";
+    var inputValueEnd = "@Model.FilterValueEnd";
+    var filterType = "@Model.FilterType";
 
+    // Lấy tham chiếu đến ô input
+     var filterValueStartInput = document.getElementById("filterValueStart");
+    var filterValueEndInput = document.getElementById("filterValueEnd");
+
+    // Thiết lập giá trị của ô input và kiểu dữ liệu tương ứng
+       
+
+    if (filterType === "date") {
+        filterValueStartInput.type = "date";
+        filterValueEndInput.type = "date";
+    } else if (filterType === "total") {
+        filterValueStartInput.type = "number";
+        filterValueEndInput.type = "number";
+    }
+     filterValueStartInput.value = inputValueStart;
+    filterValueEndInput.value = inputValueEnd;
+
+    $(document).ready(function() {
+        $('#filterType').change(function() {
+            var filterType = $(this).val();
+            var filterValueStart = $('#filterValueStart');
+            var filterValueEnd = $('#filterValueEnd');
+
+            if (filterType === 'total') {
+                filterValueStart.prop('type', 'number');
+                filterValueEnd.prop('type', 'number');
+            } else if (filterType === 'date') {
+                filterValueStart.prop('type', 'date');
+                filterValueEnd.prop('type', 'date');
+            }
+        });
+    });
+</script>
+
+<script src="~/js/debt.js"></script>
+<script src="~/js/numtoword.js"></script>

@@ -30,31 +30,20 @@ namespace PersonalMoney.Pagesgg
 
             if (de != null)
             {
-                debt = de;
+
+                _context.DebtDetails.Remove(de);
+                _context.SaveChanges();
+                StatusMessage = "Deleted a debt successfully!";
+
             }
             else
             {
-                StatusMessage = "Debtor not exists!";
+                StatusMessage = "Delete a debt failed!";
             }
+
             ViewData["debtorId"] = id.ToString();
-            return Page();
+            return Redirect($"/debtor/details/debt/{de.DebtorId}");
         }
 
-        public IActionResult OnPost(int id)
-        {
-            if (id != null)
-            {
-                var p = _context.Debtors.FirstOrDefault(mo => mo.Id == id);
-                if (p != null)
-                {
-                    _context.Debtors.Remove(p);
-                    _context.SaveChanges();
-                    StatusMessage = "Deleted a debtor successfully!";
-                    return RedirectToPage("/debtor/index");
-                }
-            }
-
-            return NotFound();
-        }
     }
 }

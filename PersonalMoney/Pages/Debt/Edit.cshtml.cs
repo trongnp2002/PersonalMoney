@@ -43,15 +43,11 @@ namespace PersonalMoney.Pagegi
         }
 
 
-        public async Task<IActionResult> OnPostAsync(bool confirmDelete = false)
+        public async Task<IActionResult> OnPostAsync()
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    return Page();
-            //}
-            if (!confirmDelete)
+            if (!ModelState.IsValid)
             {
-                return RedirectToPage("/debtor/details/debt/" + debt.DebtorId);
+                return Page();
             }
             var debtUpdate = _context.DebtDetails.FirstOrDefault(d => d.Id == debt.Id);
 
@@ -65,7 +61,8 @@ namespace PersonalMoney.Pagegi
                 _context.DebtDetails.Update(debtUpdate);
                 await _context.SaveChangesAsync();
                 StatusMessage = "Update a debt successfully!";
-                return RedirectToPage("/debtor/details/debt/" + debtUpdate.DebtorId);
+                return Redirect($"/debtor/details/debt/{debtUpdate.DebtorId}");
+
             }
 
             StatusMessage = "Update debt fail!";
