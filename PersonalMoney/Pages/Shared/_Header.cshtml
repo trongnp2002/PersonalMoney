@@ -1,51 +1,50 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using PersonalMoney.Models
-
+@using Microsoft.EntityFrameworkCore
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 @*
 For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    var listWallet = ViewData["listWallet"] as List<PersonalMoney.Models.Wallet>;
+    var optionsBuilder = new DbContextOptionsBuilder<PersonalMoneyContext>();
+    optionsBuilder.UseSqlServer("Data Source=localhost,1433;Initial Catalog=PersonalMoney;User ID=sa;Password=123");
 }
 <header class="header-desktop2">
     <div class="section__content section__content--p30">
         <div class="container-fluid">
             <div class="header-wrap2 justify-content-between">
-                <div class="dropdown">
-                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        choose wallets
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                        @if (listWallet != null && listWallet.Count > 0)
-                        {
-                            foreach (var wallet in listWallet)
+                @using (var dbContext = new PersonalMoneyContext(optionsBuilder.Options))
+                {
+                    var wallets = dbContext.Wallets.ToList();
+                    if (wallets.Any())
+                    {
+                        <select id="slcWallet" onchange="selectWallet()" class="form-select">
+                            <option selected>Choose Wallets</option>
+                            @foreach (var wallet in wallets)
                             {
-                                <li>
-                                    <form method="post" asp-page-handler="SelectWallet" asp-route-walletId="@wallet.Id">
-                                        <button type="submit" class="btn-link">
-                                            @Html.DisplayFor(modelItem => wallet.Name)
-                                        </button>
-                                    </form>
-                                </li>
+                            <option value="@wallet.Id">@wallet.Name</option>
                             }
-                        }
-                    </ul>
-                </div>
+                        </select>
+                    }
+                    else
+                    {
+                        <p>No wallets available.</p>
+                    }
+                }
+                }
                 <div class="logo d-block d-lg-none">
                     <a href="#">
                         <img src="images/icon/logo-white.png" alt="CoolAdmin" />
                     </a>
-                </div>   
+                </div>
                 <div class="header-button2">
                     <div class="header-button-item js-item-menu">
                         <i class="zmdi zmdi-search"></i>
                         <div class="search-dropdown js-dropdown">
                             <form action="">
                                 <input class="au-input au-input--full au-input--h65" type="text"
-                                    placeholder="Search for datas &amp; reports..." />
+                                       placeholder="Search for datas &amp; reports..." />
                                 <span class="search-dropdown__icon">
                                     <i class="zmdi zmdi-search"></i>
                                 </span>
@@ -102,3 +101,30 @@ For more information on enabling MVC for empty projects, visit https://go.micros
 <aside class="menu-sidebar2 js-right-sidebar d-block d-lg-none">
     <partial name="_SideBar" />
 </aside>
+
+<script>
+    function selectWallet() {
+        localStorage.setItem("walletId", document.getElementById('slcWallet').value);
+}
+    // Function to set the option as selected based on the value in localStorage
+    function onloadWallet() {
+        var selectElement = document.getElementById("slcWallet");
+
+        // Retrieve the selected value from localStorage
+        var selectedValue = localStorage.getItem("walletId");
+
+        // Loop through options and set the selected attribute
+        for (var i = 0; i < selectElement.options.length; i++) {
+            var option = selectElement.options[i];
+
+            // Check if the option value matches the selected value
+            if (option.value == selectedValue) {
+                option.selected = true;
+            } else {
+                option.selected = false;
+            }
+        }
+
+    }
+    onloadWallet();
+</script>
