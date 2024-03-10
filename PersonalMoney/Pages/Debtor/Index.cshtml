@@ -6,6 +6,16 @@
     var lstDebtors = ViewData["lstDebtors"] as List<PersonalMoney.Models.Debtor>;
 }
 
+<style>
+    .table-data2 th:nth-child(2),
+    .table-data2 td:nth-child(2) {
+        max-width: 100px !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+</style>
+
 <partial name="_AlertMessage" />
 
 <div class="main-content" style="padding-top: 50px;min-height: 75vh;">
@@ -74,15 +84,15 @@
                         <table class="table table-data2">
                             <thead>
                                <tr>
-                                    <th style="width: 10px !important;">Id</th>
-                                    <th style="width: 100px !important;">Name</th>
-                                    <th style="width: 150px !important;">Address</th>
-                                    <th style="width: 100px !important;">Phone</th>
-                                    @* <th style="width: 10px !important;">Email</th> *@
-                                    <th style="width: 120px !important;">Date create</th>
-                                    <th style="width: 120px !important;">Date update</th>
-                                    <th style="width: 80px !important;">Total</th>
-                                    <th style="width: 150px !important;"></th>
+                                    <th >Id</th>
+                                    <th >Name</th>
+                                    <th >Address</th>
+                                    <th >Phone</th>
+                                    <th >Email</th>
+                                    <th >Date create</th>
+                                    <th >Date update</th>
+                                    <th >Total</th>
+                                    <th ></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -91,31 +101,32 @@
                                     @foreach (var item in lstDebtors)
                                     {
                                         <tr class="tr-shadow">
-                                            <td>
+                                            <td style="max-width: 100px !important;">
                                                 @Html.DisplayFor(modelItem => item.Id)
                                             </td>
+                                            <td style="max-width: 260px !important;min-width: 260px !important;">
 
-                                            <td>
                                                 @Html.DisplayFor(modelItem => item.Name)
                                             </td>
-                                            <td>
+                                            <td style="max-width: 180px !important;min-width: 180px !important;">
+
                                                 @Html.DisplayFor(modelItem => item.Address)
                                             </td>
-                                            <td>
+                                            <td style="max-width: 150px !important;min-width: 150px !important;">
                                                 @Html.DisplayFor(modelItem => item.Phone)
                                             </td>
-                                           @*  <td>
+                                            <td style="max-width: 260px !important;min-width: 260px !important;">
                                                 @Html.DisplayFor(modelItem => item.Email)
-                                            </td> *@
-                                          
-                                            <td>
+                                            </td>
+
+                                            <td style="max-width: 100px !important;min-width: 100px !important;">
                                                 @Html.DisplayFor(modelItem => item.DateCreate)
                                             </td>
-                                            <td>
+                                            <td style="max-width: 100px !important;min-width: 100px !important;">
                                                 @Html.DisplayFor(modelItem => item.DateUpdate)
                                             </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.TotalMoney)
+                                            <td style="max-width: 130px !important;min-width: 130px !important;">
+                                                @Html.DisplayFor(modelItem => item.TotalMoney)$
                                             </td>
                                             <td>
                                                 <div class="table-data-feature">
