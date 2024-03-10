@@ -4548,6 +4548,8 @@ section {
     padding: 25px 40px;
     padding-right: 10px;
     border: none;
+    overflow: hidden; /* Ẩn nội dung vượt ra ngoài ô bảng */
+    text-overflow: ellipsis; /* Hiển thị dấu ba chấm (...) khi nội dung bị cắt ngắn */
 }
 
     .table-data2.table tbody td.desc {

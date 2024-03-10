@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using PersonalMoney.Models;
 
 namespace PersonalMoney.Pagesg
@@ -26,7 +27,7 @@ namespace PersonalMoney.Pagesg
 
         public IActionResult OnGet(int id)
         {
-            var debt = _context.Debtors.FirstOrDefault(mo => mo.Id == id);
+            var debt = _context.Debtors.Include(d => d.DebtDetails).FirstOrDefault(mo => mo.Id == id);
 
             if (debt != null)
             {

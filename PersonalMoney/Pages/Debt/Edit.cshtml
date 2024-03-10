@@ -2,7 +2,7 @@
 @model EditModel
 @using PersonalMoney.Pagegi
 @{
-    ViewData["Title"] = "Update debtor";
+    ViewData["Title"] = "Update debt";
 }
 <link rel="stylesheet" href="~/css/debt.css" />
 
@@ -22,9 +22,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="@Model.debt.Classify" class="control-label"></label><br />
-                <span class="classify-option" id="plus @Model.debt.Id" onclick="selectOptions(true,@Model.debt.Id)" classappend="@(Model.debt.Classify ? " active" : "" )">+</span>
-                <span class="classify-option" id="minus @Model.debt.Id" onclick="selectOptions(false,@Model.debt.Id)" classappend="@(Model.debt.Classify ? "" : "active")">-</span>
-                <input type="hidden" id="classifyValue  @Model.debt.Id" asp-for="@Model.debt.Classify">
+                <span class="classify-option @(Model.debt.Classify ? "active" : "")" id="plus@(Model.debt.Id)" onclick="selectOption(true, @(Model.debt.Id))">+</span>
+                <span class="classify-option @(Model.debt.Classify ? "" : "active")" id="minus@(Model.debt.Id)" onclick="selectOption(false, @(Model.debt.Id))">-</span>
+                <input type="hidden" id="classifyValue" asp-for="@Model.debt.Classify">
                 <br /><i>
                     (+) add a debt
                     to this person, (-) pay a debt or add a debt

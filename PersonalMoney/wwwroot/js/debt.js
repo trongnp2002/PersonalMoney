@@ -15,9 +15,9 @@
 }
 
 function selectOption(isPlus, id) {
-    var plusOption = document.getElementById("plus " + id);
-    var minusOption = document.getElementById("minus " + id);
-    var classifyValue = document.getElementById("classifyValue " + id);
+    var plusOption = document.getElementById("plus" + id);
+    var minusOption = document.getElementById("minus" + id);
+    var classifyValue = document.getElementById("classifyValue");
 
     if (isPlus) {
         plusOption.classList.add("active");
