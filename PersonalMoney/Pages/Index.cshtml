@@ -9,7 +9,7 @@
     <div class="section__content section__content--p30">
         <div class="container-fluid">
             <button class="au-btn au-btn-icon au-btn--green m-b-20">
-                <a style="color: white" href="/createwallet" class="zmdi zmdi-plus">add wallet</a>
+                <a style="color: white" href="/wallet/create" class="zmdi zmdi-plus">Add Wallet</a>
             </button>
             <div class="row">
                 <div class="col-md-6 col-lg-3">
@@ -170,8 +170,8 @@
                                             <td>@wallet.Name</td>
                                             <td>@wallet.Balance</td>
                                             <td class="d-flex justify-content-center">
-                                                <button name="delete" type="button" class="btn btn-danger">Delete</button>
-                                                <button name="edit" type="button" class="btn btn-warning">Edit</button>
+                                                <button type="button" class="btn btn-danger"><a style="color:white" href="/wallet/delete/@wallet.Id">Delete</a></button>
+                                                <button type="button" class="btn btn-warning"><a style="color:white" href="/wallet/update/@wallet.Id">Edit</a></button>
                                             </td>
                                         </tr>
                                     }   

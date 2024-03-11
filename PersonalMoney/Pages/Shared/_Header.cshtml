@@ -18,7 +18,6 @@ For more information on enabling MVC for empty projects, visit https://go.micros
                     if (wallets.Any())
                     {
                         <select id="slcWallet" onchange="selectWallet()" class="form-select">
-                            <option selected>Choose Wallets</option>
                             @foreach (var wallet in wallets)
                             {
                                 <option value="@wallet.Id">@wallet.Name</option>
@@ -104,23 +103,15 @@ For more information on enabling MVC for empty projects, visit https://go.micros
     function selectWallet() {
         localStorage.setItem("walletId", document.getElementById('slcWallet').value);
 }
-    // Function to set the option as selected based on the value in localStorage
     function onloadWallet() {
         var selectElement = document.getElementById("slcWallet");
-
-        // Retrieve the selected value from localStorage
         var selectedValue = localStorage.getItem("walletId");
-
-        // Loop through options and set the selected attribute
         for (var i = 0; i < selectElement.options.length; i++) {
             var option = selectElement.options[i];
-
-            // Check if the option value matches the selected value
             if (option.value == selectedValue) {
                 option.selected = true;
             } else {
                 option.selected = false;
-                localStorage.setItem("walletId",0);
             }
         }
     }
