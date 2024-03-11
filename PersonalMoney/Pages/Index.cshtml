@@ -4,12 +4,12 @@
     ViewData["Title"] = "Home page";
 }
 <!-- STATISTIC-->
-
+@Html.AntiForgeryToken()
 <section class="statistic">
     <div class="section__content section__content--p30">
         <div class="container-fluid">
             <button class="au-btn au-btn-icon au-btn--green m-b-20">
-                <a href="/createwallet" class="zmdi zmdi-plus">add wallet</a>
+                <a style="color: white" href="/createwallet" class="zmdi zmdi-plus">add wallet</a>
             </button>
             <div class="row">
                 <div class="col-md-6 col-lg-3">
@@ -154,132 +154,30 @@
                         <h3 class="title-3 m-b-30">
                             <i class="zmdi zmdi-account-calendar"></i>Wallets
                         </h3>
-
                         <div class="table-responsive table-data">
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <td>name</td>
-                                        <td>balance</td>
-                                        <td>transaction</td>
-                                        <td></td>
+                                        <td>Name</td>
+                                        <td>Balance</td>
+                                        <td class="d-flex justify-content-center">Action</td>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="table-data__info">
-                                                <h6>lori lynch</h6>
-                                                <span>
-                                                    <a href="#">johndoe@gmail.com</a>
-                                                </span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="role admin">admin</span>
-                                        </td>
-                                        <td>
-                                            <div class="rs-select2--trans rs-select2--sm">
-                                                <select class="js-select2" name="property">
-                                                    <option selected="selected">Full Control</option>
-                                                    <option value="">Post</option>
-                                                    <option value="">Watch</option>
-                                                </select>
-                                                <div class="dropDownSelect2"></div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="more">
-                                                <i class="zmdi zmdi-more"></i>
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="table-data__info">
-                                                <h6>lori lynch</h6>
-                                                <span>
-                                                    <a href="#">johndoe@gmail.com</a>
-                                                </span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="role user">user</span>
-                                        </td>
-                                        <td>
-                                            <div class="rs-select2--trans rs-select2--sm">
-                                                <select class="js-select2" name="property">
-                                                    <option value="">Full Control</option>
-                                                    <option value="" selected="selected">Post</option>
-                                                    <option value="">Watch</option>
-                                                </select>
-                                                <div class="dropDownSelect2"></div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="more">
-                                                <i class="zmdi zmdi-more"></i>
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="table-data__info">
-                                                <h6>lori lynch</h6>
-                                                <span>
-                                                    <a href="#">johndoe@gmail.com</a>
-                                                </span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="role user">user</span>
-                                        </td>
-                                        <td>
-                                            <div class="rs-select2--trans rs-select2--sm">
-                                                <select class="js-select2" name="property">
-                                                    <option value="">Full Control</option>
-                                                    <option value="" selected="selected">Post</option>
-                                                    <option value="">Watch</option>
-                                                </select>
-                                                <div class="dropDownSelect2"></div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="more">
-                                                <i class="zmdi zmdi-more"></i>
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="table-data__info">
-                                                <h6>lori lynch</h6>
-                                                <span>
-                                                    <a href="#">johndoe@gmail.com</a>
-                                                </span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="role member">member</span>
-                                        </td>
-                                        <td>
-                                            <div class="rs-select2--trans rs-select2--sm">
-                                                <select class="js-select2" name="property">
-                                                    <option selected="selected">Full Control</option>
-                                                    <option value="">Post</option>
-                                                    <option value="">Watch</option>
-                                                </select>
-                                                <div class="dropDownSelect2"></div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="more">
-                                                <i class="zmdi zmdi-more"></i>
-                                            </span>
-                                        </td>
-                                    </tr>
+                                <tbody id="walletTableBody">
+                                    @foreach (var wallet in Model.ListWallets)
+                                    {
+                                        <tr>
+                                            <td>@wallet.Name</td>
+                                            <td>@wallet.Balance</td>
+                                            <td class="d-flex justify-content-center">
+                                                <button name="delete" type="button" class="btn btn-danger">Delete</button>
+                                                <button name="edit" type="button" class="btn btn-warning">Edit</button>
+                                            </td>
+                                        </tr>
+                                    }   
                                 </tbody>
                             </table>
+
                         </div>
                         <div class="user-data__footer">
                             <button class="au-btn au-btn-load">load more</button>
@@ -287,8 +185,11 @@
                     </div>
                     <!-- END USER DATA-->
                 </div>
-                
+
             </div>
         </div>
     </div>
 </section>
+
+<script>
+</script>

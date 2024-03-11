@@ -6,7 +6,7 @@ namespace PersonalMoney.Pages
 {
     public class IncomeModel : BasePageModel
     {
-        public IncomeModel(ILogger<TestPage> logger, PersonalMoneyContext dbContext) : base(logger, dbContext)
+        public IncomeModel(PersonalMoneyContext dbContext) : base( dbContext)
         {
         }
 

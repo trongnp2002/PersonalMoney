@@ -6,7 +6,7 @@ namespace PersonalMoney.Pages
 {
     public class ChangePasswordModel : BasePageModel
     {
-        public ChangePasswordModel(ILogger<TestPage> logger, PersonalMoneyContext dbContext) : base(logger, dbContext)
+        public ChangePasswordModel( PersonalMoneyContext dbContext) : base( dbContext)
         {
         }
 

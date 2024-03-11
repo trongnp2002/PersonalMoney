@@ -10,11 +10,9 @@ namespace PersonalMoney.Pages
 {
     public class BasePageModel : PageModel
     {
-        protected readonly ILogger<TestPage> _logger;
         protected readonly PersonalMoneyContext _dbContext;
-        public BasePageModel(ILogger<TestPage> logger, PersonalMoneyContext dbContext)
+        public BasePageModel( PersonalMoneyContext dbContext)
         {
-            _logger = logger;
             _dbContext = dbContext;
         }
 
