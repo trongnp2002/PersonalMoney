@@ -12,7 +12,7 @@ namespace PersonalMoney.Pages
 {
     public class TestPage : BasePageModel
     {
-        public TestPage(ILogger<TestPage> logger, PersonalMoneyContext dbContext) : base(logger, dbContext)
+        public TestPage( PersonalMoneyContext dbContext) : base( dbContext)
         {
         }
 

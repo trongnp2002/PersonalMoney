@@ -6,7 +6,7 @@ namespace PersonalMoney.Pages
 {
     public class ListCategoryModel : BasePageModel
     {
-        public ListCategoryModel(ILogger<TestPage> logger, PersonalMoneyContext dbContext) : base(logger, dbContext)
+        public ListCategoryModel( PersonalMoneyContext dbContext) : base(dbContext)
         {
         }
 

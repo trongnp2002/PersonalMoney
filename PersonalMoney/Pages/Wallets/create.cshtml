@@ -1,5 +1,5 @@
-﻿@page "/createwallet"
-@model PersonalMoney.Pages.Wallets.createModel
+﻿@page "/wallet/create"
+@model PersonalMoney.Pages.Wallets.CreateModel
 @{
     ViewData["Title"] = "Add new wallet";
 }
@@ -15,4 +15,5 @@
         <span asp-validation-for="Wallet.Balance" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-primary">Add Wallet</button>
+    <a href="/">Back to List</a>
 </form>

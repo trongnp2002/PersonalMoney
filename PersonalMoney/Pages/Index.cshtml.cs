@@ -3,31 +3,36 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PersonalMoney.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using System.Runtime.InteropServices;
+using System.ComponentModel.DataAnnotations;
+
 namespace PersonalMoney.Pages
 {
     [Authorize]
     public class IndexModel : BasePageModel
     {
-        private readonly ILogger<IndexModel> _logger;
-        private readonly PersonalMoneyContext _context;
 
-        public IndexModel(ILogger<TestPage> logger, PersonalMoneyContext dbContext) : base(logger, dbContext)
+        [BindProperty]
+        public List<Wallet> ListWallets { get; set; }
+        public IndexModel( PersonalMoneyContext dbContext) : base( dbContext)
         {
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
-            // try
-            // {
-            //     throw new Exception("test");
-
-            // }catch(Exception e){
-            //     Return500ErrorPage();
-            // }
+            ListWallets = _dbContext.Wallets.ToList();
+            return Page();
         }
-        public IActionResult OnPostSelectWallet(int walletId)
-        {
-            HttpContext.Session.SetInt32("SelectedWalletId", walletId);
+
+        public IActionResult OnPost(int id)
+        { 
+            var wallet = _dbContext.Wallets.Find(id);
+            if (wallet != null)
+            {
+                _dbContext.Wallets.Remove(wallet);
+                _dbContext.SaveChanges();
+            }
             return Page();
         }
     }

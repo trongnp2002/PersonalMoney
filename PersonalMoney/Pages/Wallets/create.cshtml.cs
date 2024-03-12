@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 namespace PersonalMoney.Pages.Wallets
 {
-    public class createModel : PageModel
+    public class CreateModel : PageModel
     {
         [BindProperty]
         public Wallet Wallet { get; set; }
@@ -16,7 +16,7 @@ namespace PersonalMoney.Pages.Wallets
         private readonly UserManager<User> _userManager;
 
 
-        public createModel(PersonalMoneyContext context, UserManager<User> user)
+        public CreateModel(PersonalMoneyContext context, UserManager<User> user)
         {
             _context= context;
             _userManager= user;
