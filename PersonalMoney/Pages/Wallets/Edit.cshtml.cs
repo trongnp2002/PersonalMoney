@@ -45,7 +45,7 @@ namespace PersonalMoney.Pages.Wallets
                 _context.Wallets.Update(wallet);
                 await _context.SaveChangesAsync();
                 StatusMessage = "Update a Wallet successfully!";
-                return RedirectToPage("/Index");
+                return Redirect("/Index");
             }
 
             StatusMessage = "Wallet not exists!";
