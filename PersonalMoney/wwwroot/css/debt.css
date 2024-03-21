@@ -1,0 +1,39 @@
+﻿
+.classify-option {
+    display: inline-block;
+    width: 200px; /* Độ rộng mong muốn */
+    height: 35px; /* Chiều cao mong muốn */
+    text-align: center; /* Căn giữa nội dung theo chiều ngang */
+    line-height: 35px; /* Chiều cao dòng giống với chiều cao của khối */
+    border-radius: 17.5px; /* Để tạo góc cong là nửa chiều cao */
+    border: 1px solid #ccc; /* Đường viền */
+    cursor: pointer; /* Con trỏ chuột */
+    margin: 0 5px; /* Khoảng cách giữa các nút */
+}
+
+
+.classifys-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.classify-option.active {
+    background-color: rgb(55, 184, 55);
+}
+
+.container span {
+    display: inline-block;
+    width: 300px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    background-color: rgb(192, 181, 181);
+    border-radius: 7px;
+    color: white;
+    font-size: 24px;
+    margin: 0 5px;
+    cursor: pointer;
+}

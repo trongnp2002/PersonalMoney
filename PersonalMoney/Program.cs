@@ -15,6 +15,7 @@ try
     var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
     // Add services to the container.
+    builder.Services.AddSession();
     builder.Services.AddRazorPages();
     builder.Services.AddControllersWithViews();
 
@@ -100,9 +101,10 @@ try
     app.UseRouting();
     app.UseAuthentication();
     app.UseAuthorization();
+    app.UseEndpoints(endpoints => endpoints.MapRazorPages());
+    app.UseSession();
+    app.UseMiddleware<ExceptionHandlingMiddleware>();
     // app.UseStatusCodePagesWithRedirects("/error/{0}");
-/*    app.UseMiddleware<ExceptionHandlingMiddleware>();
-*/
     app.MapRazorPages();
     app.MapHub<SignalrServer>("/ws-server");
     app.Run();

@@ -2,10 +2,10 @@
 @model EditModel
 @using PersonalMoney.Pagegi
 @{
-    ViewData["Title"] = "Update debtor";
-    // Layout = "/Views/Shared/_LayoutAdmin.cshtml";
-
+    ViewData["Title"] = "Update debt";
 }
+<link rel="stylesheet" href="~/css/debt.css" />
+
 <partial name="_AlertMessage" />
 
 <hr />
@@ -14,6 +14,7 @@
         <form method="post">
             <div asp-validation-summary="All" class="text-danger"></div>
             <input type="hidden" asp-for="@Model.debt.DebtorId" />
+            <input type="hidden" asp-for="@Model.debt.Id" />
             <div class="form-group">
                 <label asp-for="@Model.debt.Note" class="control-label"></label>
                 <textarea asp-for="@Model.debt.Note" class="form-control"></textarea>
@@ -21,9 +22,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="@Model.debt.Classify" class="control-label"></label><br />
-                <span class="classify-option" id="plus" onclick="selectOptions(true)">+</span>
-                <span class="classify-option" id="minus" onclick="selectOptions(false)">-</span>
-                <input type="hidden" id="classifyValue" asp-for="@Model.debt.Classify" name="classify" value="">
+                <span class="classify-option @(Model.debt.Classify ? "active" : "")" id="plus@(Model.debt.Id)" onclick="selectOption(true, @(Model.debt.Id))">+</span>
+                <span class="classify-option @(Model.debt.Classify ? "" : "active")" id="minus@(Model.debt.Id)" onclick="selectOption(false, @(Model.debt.Id))">-</span>
+                <input type="hidden" id="classifyValue" asp-for="@Model.debt.Classify">
                 <br /><i>
                     (+) add a debt
                     to this person, (-) pay a debt or add a debt
@@ -32,7 +33,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="@Model.debt.MoneyDebt" class="control-label"></label>
-                <input asp-for="@Model.debt.MoneyDebt" class="form-control" />
+                <input type="number" asp-for="@Model.debt.MoneyDebt" class="form-control" />
                 <span asp-validation-for="@Model.debt.MoneyDebt" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -51,9 +52,9 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
+<script src="~/js/debt.js"></script>
 @{
-    var summernote = new PersonalMoney.Models.Summernote("#Note");
+    var summernote = new PersonalMoney.Models.Summernote("#debt_Note");
 }
 
 <partial name="_Summernote" model="summernote" />

@@ -13,15 +13,20 @@
         public bool loadLibrary { get; set; }
 
         public int height { get; set; } = 120;
+
+
         public string toolbar { get; set; } = @"[
-                ['style', ['style']],
-                ['font', ['bold', 'underline', 'clear']],
-                ['color', ['color']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                ['table', ['table']],
-                ['insert', ['link', 'picture', 'video', 'elfinder']],
-                ['height', ['height']],
-                ['view', ['fullscreen', 'codeview', 'help']]
-            ]";
+            ['style', ['italic']],
+            ['font', ['bold', 'underline', 'clear', 'strikethrough']],
+            ['fontsize', ['fontsize']],
+            ['fontname', ['fontname']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['table', ['table']],
+            ['insert', ['link', 'picture', 'video', 'elfinder']],
+            ['height', ['height']],
+            ['view', ['fullscreen', 'codeview', 'help']]
+        ]";
+
     }
 }

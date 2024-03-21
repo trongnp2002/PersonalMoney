@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using PersonalMoney.Models;
 
 namespace PersonalMoney.Pagesgg
@@ -26,35 +27,34 @@ namespace PersonalMoney.Pagesgg
 
         public IActionResult OnGet(int id)
         {
-            var de = _context.DebtDetails.FirstOrDefault(mo => mo.Id == id);
-
+            var de = _context.DebtDetails.Include(d => d.Wallet).FirstOrDefault(mo => mo.Id == id);
+            var debtor = _context.Debtors.Include(d => d.DebtDetails).FirstOrDefault(d => d.Id == de.DebtorId);
             if (de != null)
             {
-                debt = de;
+                if (de.Classify)
+                {
+                    de.Wallet.Balance += de.MoneyDebt;
+                    debtor.TotalMoney -= de.MoneyDebt;
+
+                }
+                else if (!de.Classify)
+                {
+                    de.Wallet.Balance -= de.MoneyDebt;
+                    debtor.TotalMoney += de.MoneyDebt;
+                }
+                debtor.DateUpdate = DateTime.Now;
+                _context.DebtDetails.Remove(de);
+                _context.SaveChanges();
+                StatusMessage = "Deleted a debt successfully!";
             }
             else
             {
-                StatusMessage = "Debtor not exists!";
+                StatusMessage = "Delete a debt failed!";
             }
+
             ViewData["debtorId"] = id.ToString();
-            return Page();
+            return Redirect($"/debtor/details/debt/{de.DebtorId}");
         }
 
-        public IActionResult OnPost(int id)
-        {
-            if (id != null)
-            {
-                var p = _context.Debtors.FirstOrDefault(mo => mo.Id == id);
-                if (p != null)
-                {
-                    _context.Debtors.Remove(p);
-                    _context.SaveChanges();
-                    StatusMessage = "Deleted a debtor successfully!";
-                    return RedirectToPage("/debtor/index");
-                }
-            }
-
-            return NotFound();
-        }
     }
 }

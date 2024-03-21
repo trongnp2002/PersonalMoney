@@ -27,25 +27,52 @@ namespace PersonalMoney.PageDebt
         public string StatusMessage { get; set; }
         public async Task<IActionResult> OnGet(int id)
         {
-            //var user = await _userManager.GetUserAsync(User);
-            //if (user == null)
-            //{
-            //    return NotFound("Unable to load user.");
-            //}
             ViewData["debtorId"] = id.ToString();
-            //debtor = new Debtor
-            //{
-            //    User = user
-            //};
+
             return Page();
         }
 
         public IActionResult OnPost()
         {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
 
+            var wallet = _context.Wallets.FirstOrDefault(d => d.Id == debt.WalletId);
+            var debtor = _context.Debtors.Include(d => d.DebtDetails).FirstOrDefault(d => d.Id == debt.DebtorId);
+            if (wallet != null && wallet.IsActive == true)
+            {
+                if (debt.Classify)
+                {
 
+                    if (wallet.Balance > debt.MoneyDebt)
+                    {
+                        wallet.Balance -= debt.MoneyDebt;
+                        debtor.TotalMoney += debt.MoneyDebt;
+                    }
+                    else
+                    {
+                        StatusMessage = "The wallet you selected has insuffucient balance!";
+                        return Redirect($"/debtor/details/debt/{debt.DebtorId}");
+                    }
 
-            return RedirectToPage("/debtor/index");
+                }
+                else if (!debt.Classify)
+                {
+                    wallet.Balance += debt.MoneyDebt;
+                    debtor.TotalMoney -= debt.MoneyDebt;
+                }
+            }
+            else
+            {
+                StatusMessage = "The wallet you selected is invalid!";
+                return Redirect($"/debtor/details/debt/{debt.DebtorId}");
+            }
+            _context.DebtDetails.Add(debt);
+            _context.SaveChanges();
+            StatusMessage = "Create new debt successfully!";
+            return Redirect($"/debtor/details/debt/{debt.DebtorId}");
         }
     }
 }

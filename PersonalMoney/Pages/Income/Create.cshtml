@@ -1,0 +1,34 @@
+﻿@page "/income/create"
+@model PersonalMoney.Pages.Income.CreateModel
+@{
+}
+<h3>Create New Income</h3>
+<form method="post">
+    <input type="hidden" id="walletId" name="WalletId" />
+    <div class="form-group">
+        <label>Title</label>
+        <input type="text" class="form-control" name="Transaction.Title">
+        <span asp-validation-for="@Model.Transaction.Title" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Amount</label>
+        <input type="text" class="form-control" name="Transaction.Amount">
+        <span asp-validation-for="@Model.Transaction.Amount" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <select name="SelectedCategoryId" class="form-select">
+            @foreach (var item in Model.Categories)
+            {
+                <option value="@item.Id">@item.Name</option>
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Income</button>
+    <a href="/income">Back to List</a>
+</form>
+<script>
+    function getWalletId() {
+        document.getElementById('walletId').value = localStorage.getItem('walletId');
+    }
+    getWalletId();
+</script>
