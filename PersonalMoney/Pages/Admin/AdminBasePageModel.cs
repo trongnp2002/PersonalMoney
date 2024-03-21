@@ -7,6 +7,8 @@ using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.SignalR;
+using PersonalMoney.Hubs;
 using PersonalMoney.Models;
 using PersonalMoney.Models.Response;
 
@@ -14,16 +16,20 @@ namespace PersonalMoney.Pages.Admin
 {
     public class AdminBasePageModel : PageModel
     {
-        protected readonly RoleManager<IdentityRole> _roleManager;
+        protected readonly RoleManager<Role> _roleManager;
         protected readonly PersonalMoneyContext _personalMoneyContext;
         protected readonly IMapper _mapper;
+        protected readonly IHubContext<SignalrServer> _signalHub;
+        protected readonly UserManager<User> _userManager;
 
 
-        public AdminBasePageModel(RoleManager<IdentityRole> roleManager, PersonalMoneyContext personalMoneyContext, IMapper mapper)
+        public AdminBasePageModel(RoleManager<Role> roleManager,UserManager<User> userManager ,PersonalMoneyContext personalMoneyContext, IMapper mapper, IHubContext<SignalrServer> signalHub)
         {
             _roleManager = roleManager;
             _personalMoneyContext = personalMoneyContext;
             _mapper = mapper;
+            _signalHub = signalHub;
+            _userManager = userManager;
         }
 
         public JsonResult ResponseContent<T>(int code,string message, T data)
@@ -75,6 +81,10 @@ namespace PersonalMoney.Pages.Admin
 
         public JsonResult ResponseCreated(){
             return ResponseContent<Object>((int)HttpStatusCode.Created, "Success! Your action was completed successfully."); 
+        }
+
+        public IActionResult Return500Page(){
+            return Redirect("/error/500");
         }
 
     }

@@ -1,18 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using PersonalMoney.Services;
 
 namespace PersonalMoney.Models
 {
-    public class PersonalMoneyContext : IdentityDbContext<User>
+    public class PersonalMoneyContext : IdentityDbContext<User, Role, string>
     {
 
 
         public PersonalMoneyContext(DbContextOptions<PersonalMoneyContext> options)
             : base(options)
         {
+
         }
 
         public virtual DbSet<Budget> Budgets { get; set; } = null!;
@@ -30,6 +33,7 @@ namespace PersonalMoney.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Budget>(entity =>
             {
@@ -58,9 +62,14 @@ namespace PersonalMoney.Models
 
             modelBuilder.Entity<Category>(entity =>
             {
+                entity.ToTable("Categories");
                 entity.HasIndex(e => e.UserId, "IX_Categories_UserId");
 
                 entity.Property(e => e.Budget).HasColumnType("decimal(11, 2)");
+
+                entity.Property(e => e.LastUpdate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(255)
@@ -155,7 +164,7 @@ namespace PersonalMoney.Models
                     .HasConstraintName("FK_otp_users");
             });
 
-        
+
             modelBuilder.Entity<Transaction>(entity =>
             {
                 entity.ToTable("Transaction");
@@ -185,6 +194,7 @@ namespace PersonalMoney.Models
                     .HasConstraintName("fk_history_transaction_wallet");
             });
 
+
             modelBuilder.Entity<User>(entity =>
             {
 
@@ -204,9 +214,15 @@ namespace PersonalMoney.Models
                 entity.Property(e => e.LastName)
                     .HasMaxLength(16)
                     .IsUnicode(false);
-
+                entity.HasMany(d => d.Roles)
+                   .WithMany(p => p.Users)
+                   .UsingEntity<IdentityUserRole<string>>(
+                       l => l.HasOne<Role>().WithMany().HasForeignKey("RoleId"),
+                       r => r.HasOne<User>().WithMany().HasForeignKey("UserId"));
 
             });
+
+
 
             modelBuilder.Entity<Wallet>(entity =>
             {

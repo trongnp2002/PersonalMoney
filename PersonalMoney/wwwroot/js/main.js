@@ -1059,7 +1059,7 @@
     //doughut chart
     var ctx = document.getElementById("doughutChart");
     if (ctx) {
-      ctx.height = 150;
+      ctx.height = 333;
       var myChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
@@ -1108,9 +1108,9 @@
   try {
 
     //pie chart
-    var ctx = document.getElementById("pieChart");
+      var ctx = document.getElementById("pieChart");
+      ctx.height = 273;
     if (ctx) {
-      ctx.height = 200;
       var myChart = new Chart(ctx, {
         type: 'pie',
         data: {
@@ -1128,9 +1128,9 @@
               "rgba(0, 123, 255,0.5)",
               "rgba(0,0,0,0.07)"
             ]
-
           }],
           labels: [
+            "Green",
             "Green",
             "Green",
             "Green"
@@ -1157,9 +1157,10 @@
   try {
 
     // polar chart
-    var ctx = document.getElementById("polarChart");
+      var ctx = document.getElementById("polarChart");
+      ctx.height = 273;
+
     if (ctx) {
-      ctx.height = 200;
       var myChart = new Chart(ctx, {
         type: 'polarArea',
         data: {

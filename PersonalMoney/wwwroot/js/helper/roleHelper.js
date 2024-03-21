@@ -1,7 +1,7 @@
 
 import { buttonTogglePopup } from "../atoms/buttonCustom.js";
-import { roleUpdate } from "../const/model.js";
-export const addOnclickForClasses = (className) => {
+import { roleModel,roleUpdate } from "../const/model.js";
+export const addOnclickUpdate = (className) => {
     $(className).click(function () {
         const roleId = $(this).data('role-id');
         const roleName = $(this).data('role-name');
@@ -11,11 +11,21 @@ export const addOnclickForClasses = (className) => {
     });
 }
 
+export const addOnClickDelete = (className)=>{
+    $(className).click(function(){
+        const roleName = $(this).data('role-name');
+        roleModel.name = roleName;
+        console.log(roleModel);
+        $('#popup-delete__model-type').text('Role');
+        $('#popup-delete_model-value').text(roleName);
+    })
+}
+
 export const regenerateTableBody = (data) => {
  
     const tableBody = $('#role__table-body');
     const updateClass = ['btn', 'btn-warning', 'role__popup__update'];
-    const deleteClass = ['btn', 'btn-danger']
+    const deleteClass = ['btn', 'btn-danger','role__popup__delete']
     tableBody.empty();
     $.each(data, (index, element) => {
         const tr = $('<tr></tr>');
@@ -23,12 +33,15 @@ export const regenerateTableBody = (data) => {
         const iconUpdate = $('<i></i>').addClass('fas fa-cogs');
         const iconDelete = $('<i></i>').addClass('fas fa-trash-alt');
         const actionCol = $('<td></td>');
-        const dataArr = {
+        const dataArrUpdate = {
             'data-role-id': element.id,
             'data-role-name': element.name
         }
-        const btnUpdate = createButtonWithDataAttr(updateClass, '#popupRoleUpdate', dataArr);
-        const btnDelete = createButtonWithDataAttr(deleteClass, `#deleteModel${element.id}`).css({'margin-left':'3px'});
+        const dataArrDelete={
+            'data-role-name': element.name
+        }
+        const btnUpdate = createButtonWithDataAttr(updateClass, '#popupRoleUpdate', dataArrUpdate);
+        const btnDelete = createButtonWithDataAttr(deleteClass, `#popupRoleDelete`,dataArrDelete).css({'margin-left':'3px'});
 
         roleName.text(element.name);
         roleName.appendTo(tr);
@@ -42,9 +55,10 @@ export const regenerateTableBody = (data) => {
         btnUpdate.appendTo(actionCol);
         btnDelete.appendTo(actionCol);
         actionCol.appendTo(tr);
-
         tr.appendTo(tableBody);
     });
+    addOnclickUpdate('.role__popup__update');
+    addOnClickDelete('.role__popup__delete');
 }
 
 

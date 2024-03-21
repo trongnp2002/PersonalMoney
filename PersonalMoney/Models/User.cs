@@ -16,7 +16,7 @@ namespace PersonalMoney.Models
             Otps = new HashSet<Otp>();
             Wallets = new HashSet<Wallet>();
         }
-
+        
         public string? FirstName { get; set; } = null!;
         public string? LastName { get; set; } = null!;
         public string? AvatarUrl { get; set; } = null!;
@@ -27,6 +27,8 @@ namespace PersonalMoney.Models
         public virtual ICollection<Otp> Otps { get; set; }
 
         public virtual ICollection<Wallet> Wallets { get; set; }
+        public virtual ICollection<Role> Roles { get; set; }
+
 
     }
 }

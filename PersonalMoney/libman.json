@@ -25,6 +25,15 @@
     {
       "library": "font-awesome@5.15.3",
       "destination": "wwwroot/lib/font-awesome"
+    },
+    {
+      "provider": "unpkg",
+      "library": "@microsoft/signalr@8.0.0",
+      "destination": "wwwroot/microsoft/signalr/",
+      "files": [
+        "dist/browser/signalr.js",
+        "dist/browser/signalr.min.js"
+      ]
     }
   ]
 }

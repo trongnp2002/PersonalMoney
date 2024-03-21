@@ -1,10 +1,8 @@
 @using PersonalMoney;
-@model Microsoft.AspNetCore.Identity.IdentityRole;
-<div class="modal fade" id="deleteModel@(Model.Id)" tabindex="-1" role="dialog" aria-labelledby="deleteModel"
+<div class="modal fade" id="popupRoleDelete" tabindex="-1" role="dialog" aria-labelledby="deleteModel"
     aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <form method="post" asp-page-handler="Delete">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -12,15 +10,13 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure you want to delete the @Model.GetType().Name with the specified ID = @Model.Id?</p>
+                    <p>Are you sure to delete the <span id="popup-delete__model-type"></span>  with the value: <span id="popup-delete_model-value"></span></p>
                 </div>
                 <input name="name"  type="text" hidden value="delete" readonly>
-                <input name="id" asp-for="Id" value="@Model.Id" hidden readonly type="text">
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Delete</button>
+                    <button type="button" id="role_btnDelete" class="btn btn-primary">Delete</button>
                 </div>
-            </form>
         </div>
     </div>
 </div>

@@ -13,28 +13,23 @@
                 <h2 class="signin-form-title">Sign up</h2>
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <form method="POST" class="signin-register-form" id="register-form">
-                    <span asp-validation-for="Input.FirstName" class="text-danger"></span>
                     <div class="signin-form-group">
                         <label asp-for="Input.FirstName"><i class="zmdi zmdi-account material-icons-name"></i></label>
                         <input asp-for="Input.FirstName" type="text" placeholder="Your First Name" />
                     </div>
-                    <span asp-validation-for="Input.LastName" class="text-danger"></span>
                     <div class="signin-form-group">
                         <label asp-for="Input.LastName"><i class="zmdi zmdi-account material-icons-name"></i></label>
                         <input asp-for="Input.LastName" type="text" placeholder="Your Last Name" />
                     </div>
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
                     <div class="signin-form-group">
                         <label asp-for="Input.Email"><i class="zmdi zmdi-email"></i></label>
                         <input asp-for="Input.Email" type="email" id="email" placeholder="Your Email" />
                     </div>
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
                     <span class="text-danger" id="spPass"></span>
                     <div class="signin-form-group">
                         <label asp-for="Input.Password" id="lbPass"><i class="zmdi zmdi-lock"></i></label>
                         <input asp-for="Input.Password" type="password" id="pass" placeholder="Password" />
                     </div>
-                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                     <div class="signin-form-group">
                         <label asp-for="Input.ConfirmPassword"><i class="zmdi zmdi-lock-outline"></i></label>
                         <input asp-for="Input.ConfirmPassword" type="password" id="re_pass"
