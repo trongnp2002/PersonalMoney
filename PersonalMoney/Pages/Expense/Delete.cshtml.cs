@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PersonalMoney.Models;
 
-namespace PersonalMoney.Pages.Wallets
+namespace PersonalMoney.Pages.Expense
 {
     public class DeleteModel : PageModel
     {
@@ -10,7 +10,8 @@ namespace PersonalMoney.Pages.Wallets
         [TempData]
         public string StatusMessage { get; set; }
         [BindProperty]
-        public Wallet WalletDelete { get; set; }
+        public Transaction Expense { get; set; }
+
         public DeleteModel(PersonalMoneyContext context)
         {
             _context = context;
@@ -18,15 +19,15 @@ namespace PersonalMoney.Pages.Wallets
 
         public IActionResult OnGet(int id)
         {
-            var wallet = _context.Wallets.FirstOrDefault(mo => mo.Id == id);
+            var expense = _context.Transactions.FirstOrDefault(mo => mo.Id == id);
 
-            if (wallet != null)
+            if (expense != null)
             {
-                WalletDelete = wallet;
+                Expense = expense;
             }
             else
             {
-                StatusMessage = "Wallet not exists!";
+                StatusMessage = "Expense not exists!";
             }
             return Page();
         }
@@ -34,13 +35,13 @@ namespace PersonalMoney.Pages.Wallets
         {
             if (id != null)
             {
-                var p = _context.Wallets.FirstOrDefault(mo => mo.Id == id);
-                if (p != null)
+                var expense = _context.Transactions.FirstOrDefault(mo => mo.Id == id);
+                if (expense != null)
                 {
-                    _context.Wallets.Remove(p);
+                    _context.Transactions.Remove(expense);
                     _context.SaveChanges();
-                    StatusMessage = "Deleted a Wallet successfully!";
-                    return Redirect("/Index");
+                    StatusMessage = "Deleted a Expense successfully!";
+                    return Redirect("/expense");
                 }
             }
             return NotFound();

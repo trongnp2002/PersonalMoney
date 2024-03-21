@@ -1,14 +1,9 @@
-using Humanizer;
-using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.CodeAnalysis.Differencing;
-using Org.BouncyCastle.Bcpg;
-using Org.BouncyCastle.Ocsp;
-using Org.BouncyCastle.Utilities;
 using PersonalMoney.Models;
-namespace PersonalMoney.Pages.Expense
+
+namespace PersonalMoney.Pages.Income
 {
     public class CreateModel : PageModel
     {
@@ -28,29 +23,30 @@ namespace PersonalMoney.Pages.Expense
             _context = context;
             _userManager = userManager;
             Categories = new List<Category>();
-        }
 
+        }
         public IActionResult OnGet()
         {
             var user = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
-            Categories = _context.Categories.Where(c => c.IsIncome == false && c.UserId == user.Id.ToString()).ToList();
+            Categories = _context.Categories.Where(c => c.IsIncome == true && c.UserId == user.Id.ToString()).ToList();
             return Page();
         }
         public IActionResult OnPost()
         {
             var user = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
-            pay(-Transaction.Amount);
+            pay(Transaction.Amount);
             Transaction.UserId = user.Id;
             Transaction.CategoryId = SelectedCategoryId;
             Transaction.WalletId = int.Parse(WalletId);
             Transaction.DateOfTransaction = DateTime.Now;
             _context.Transactions.Add(Transaction);
             _context.SaveChanges();
-            return Redirect("/expense");
+            return Redirect("/income");
         }
-        public void pay(decimal amount) {
+        public void pay(decimal amount)
+        {
             var wallet = _context.Wallets.FirstOrDefault(x => x.Id == int.Parse(WalletId));
-            if(wallet != null)
+            if (wallet != null)
             {
                 wallet.Balance += amount;
                 _context.Wallets.Update(wallet);

@@ -33,7 +33,7 @@ namespace PersonalMoney.Pages.Wallets
             Wallet.IsActive = true;
             _context.Wallets.Add(Wallet);
             await _context.SaveChangesAsync();
-            return Page();  
+            return Redirect("/Index");  
         }
     }
 }

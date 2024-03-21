@@ -1,12 +1,11 @@
-﻿@page "/expense"
-@model PersonalMoney.Pages.Expense.indexModel
+﻿@page "/income"
+@model PersonalMoney.Pages.Income.IndexModel
 @using PersonalMoney.Models
-@inject PersonalMoneyContext dbContext
 @{
 }
-<h3 class="title-5 m-b-35">List of expense</h3>
+<h3 class="title-5 m-b-35">List of Income</h3>
 <button class="au-btn au-btn-icon au-btn--green m-3">
-    <a style="color: white" href="/expense/create" class="zmdi zmdi-plus">Add Expense</a>
+    <a style="color: white" href="/income/create" class="zmdi zmdi-plus">Add Income</a>
 </button>
 <table class="table table-hover">
     <thead>
@@ -14,7 +13,7 @@
             <th>Title</th>
             <th>Category</th>
             <th>Wallet</th>
-            <th>Amount Expense</th>
+            <th>Amount Income</th>
             <th>DateTime</th>
             <th>Action</th>
         </tr>
@@ -29,8 +28,8 @@
                 <td>@item.Amount</td>
                 <td>@item.DateOfTransaction.ToString("dd/MM/yyyy")</td>
                 <td>
-                    <button type="button" class="btn btn-danger"><a style="color:white" href="/expense/delete/@item.Id">Delete</a></button>
-                    <button type="button" class="btn btn-warning"><a style="color:white" href="/expense/update/@item.Id">Edit</a></button>
+                    <button type="button" class="btn btn-danger"><a style="color:white" href="/income/delete/@item.Id">Delete</a></button>
+                    <button type="button" class="btn btn-warning"><a style="color:white" href="/income/update/@item.Id">Edit</a></button>
                 </td>
             </tr>
         }
