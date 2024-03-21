@@ -15,7 +15,10 @@ namespace PersonalMoney.Pages
     {
         private readonly ILogger<IndexModel> _logger;
 
-        public IndexModel(PersonalMoneyContext dbContext, UserManager<User> userManager) : base(dbContext, userManager)
+        public IndexModel(ILogger<IndexModel> logger,PersonalMoneyContext dbContext, UserManager<User> userManager) : base(dbContext, userManager)
+        {   
+            _logger = logger;
+        }
         [BindProperty]
         public List<Wallet> ListWallets { get; set; }
 
