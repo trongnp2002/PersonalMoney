@@ -15,7 +15,6 @@ export const addOnClickDelete = (className)=>{
     $(className).click(function(){
         const roleName = $(this).data('role-name');
         roleModel.name = roleName;
-        console.log(roleModel);
         $('#popup-delete__model-type').text('Role');
         $('#popup-delete_model-value').text(roleName);
     })

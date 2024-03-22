@@ -32,3 +32,18 @@ export const pageModel = {
     search: '',
 }
 
+export const adjustModel = {
+    spend: 0,
+    earn:0,
+}
+
+export const distributeModel = {
+    distributeList:[],
+}
+export const distributeElement = {
+    id: '',
+    budget: 0,
+};
+export const originDistributeModel = {
+    data: {}
+};

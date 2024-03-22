@@ -16,3 +16,37 @@ html {
 body {
     margin-bottom: 60px;
 }
+
+.datepicker td, .datepicker th {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 0.85rem;
+}
+
+.datepicker {
+    margin-bottom: 3rem;
+}
+
+    .datepicker.dropdown-menu {
+        transform-origin: top;
+    }
+
+    .datepicker.dropdown-menu {
+        min-width:30%;
+        padding: 8px; 
+        margin-top: 4px; 
+        font-size: 14px; 
+    }
+.datepicker-months{
+    width:100%;
+}
+.datepicker-months table{
+    width:100%;
+}
+.datepicker-years {
+    width: 100%;
+}
+
+    .datepicker-years table {
+        width: 100%;
+    }

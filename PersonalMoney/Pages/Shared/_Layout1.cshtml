@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using PersonalMoney.Models
+@using Microsoft.EntityFrameworkCore
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@inject PersonalMoneyContext dbContext
+<!DOCTYPE html>
 <html lang="en" http-equiv="refresh" contenteditable="0">
 
 <head>
@@ -9,12 +15,17 @@
 
     <!-- Title Page-->
     <title>@ViewData["Title"] - Login</title>
-        <script src="~/microsoft/signalr/dist/browser/signalr.js"></script>
+    <script src="~/microsoft/signalr/dist/browser/signalr.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <link href="~/lib/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" media="all">
+ 
 
     <!-- Fontfaces CSS-->
     <link href="~/css/font-face.css" rel="stylesheet" media="all">
-    <link href="~/css/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
     <link href="~/css/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
+    <link href="~/css/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
     <link href="~/css/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
 
     <!-- Bootstrap CSS-->
@@ -30,13 +41,12 @@
 
     <!-- Main CSS-->
     <link href="~/css/theme.css" rel="stylesheet" media="all">
+    <link href="~/css/site.css" rel="stylesheet" media="all">
+
 
     <!-- Main JS-->
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Jquery JS-->
-    <script src="~/css/vendor/jquery-3.2.1.min.js"></script>
     <!-- Bootstrap JS-->
     <script src="~/css/vendor/bootstrap-4.1/popper.min.js"></script>
     <script src="~/css/vendor/bootstrap-4.1/bootstrap.min.js"></script>
@@ -55,8 +65,9 @@
     <script src="~/css/vendor/chartjs/Chart.bundle.min.js"></script>
     <script src="~/css/vendor/select2/select2.min.js">
     </script>
-    
+
     <script type="module" src="~/js/site.js" asp-append-version="true"></script>
+ 
 
 </head>
 
@@ -74,25 +85,41 @@
             <partial name="_Header" />
 
             <!-- END HEADER DESKTOP-->
-
             <!-- BREADCRUMB-->
-            <section class="au-breadcrumb m-t-75">
+            <section class="au-breadcrumb m-t-75 py-2" style="z-index:100">
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="col-md-12">
-                                <div class="au-breadcrumb-content">
-                                    <div class="au-breadcrumb-left">
-                                        <span class="au-breadcrumb-span">You are here:</span>
-                                        <ul class="list-unstyled list-inline au-breadcrumb__list">
-                                            <li class="list-inline-item active">
-                                                <a href="#">Home</a>
-                                            </li>
-                                            <li class="list-inline-item seprate">
-                                                <span>/</span>
-                                            </li>
-                                            <li class="list-inline-item">Dashboard</li>
-                                        </ul>
+                            <div class="col-md-12 ">
+                                <div class="au-breadcrumb-content align-items-center">
+                                    <div class="au-breadcrumb-right align-item-center d-xl-block float-left d-md-flex">
+                                        @if (dbContext != null)
+                                        {
+                                            var wallets = await dbContext.Wallets.ToListAsync();
+                                            if (wallets.Any())
+                                            {
+                                                <label class="d-inline">Choose Wallet: &nbsp;</label>
+                                                <div class="rs-select2--dark rs-select2--md rs-select2--border d-inline-block">
+                                                    <select class="js-select2 " name="property" id="layout__slcWallet" >
+                                                        <option value="0">Select wallet</option>
+                                                        @foreach (var wallet in wallets)
+                                                        {
+                                                            <option value="@wallet.Id">@wallet.Name</option>
+                                                        }
+                                                    </select>
+                                                    <div class="dropDownSelect2"></div>
+                                                </div>                                             
+                                            }
+                                            else
+                                            {
+                                                <p>No wallets available.</p>
+                                            }
+
+                                        }
+                                       
+                                    </div>
+                                    <div class="au-breadcrumb-left align-items-center p-b-10">
+                                            @RenderSection("ButtonContent", required: false)
                                     </div>
                                 </div>
                             </div>
@@ -108,11 +135,14 @@
 
     </div>
 
- 
+    <script src="~/js/accountselect.js"></script>
 
     <!-- Main JS-->
     <script src="~/js/main.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
+ 
+ 
 
 </body>
 

@@ -1,7 +1,8 @@
 ﻿
 
 
-export const pieChart = (id,height,data) => {
+export const pieChart = (id, height, data) => {
+
     try {
         var ctx = document.getElementById(id);
         ctx.height = height;
@@ -11,6 +12,7 @@ export const pieChart = (id,height,data) => {
                 data: data,
                 options: {
                     legend: {
+                        display: false,
                         position: 'top',
                         labels: {
                             fontFamily: 'Poppins'
@@ -37,6 +39,7 @@ export const polarChart = (id, height, data) => {
                 data: data,
                 options: {
                     legend: {
+                        display: false,
                         position: 'top',
                         labels: {
                             fontFamily: 'Poppins'

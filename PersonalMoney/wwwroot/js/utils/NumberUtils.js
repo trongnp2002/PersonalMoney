@@ -10,3 +10,9 @@ export const getArrayOfPercen = (data) => {
     })
     return newArray;
 }
+
+export const emptyArray = (array) => {
+    while (array.length > 0) {
+        array.pop();
+    }
+}

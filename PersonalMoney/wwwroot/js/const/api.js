@@ -13,4 +13,6 @@ export const ADMINPAGE = {
 
 export const BUDGETPAGE = {
     GETDATA: `${host}budget/index/?handler=Data`,
+    ADJUST: `${host}budget/index/?handler=Adjust`,
+    DISTRIBUTE: `${host}budget/index/?handler=Distribute`,
 }

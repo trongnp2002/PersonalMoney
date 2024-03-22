@@ -6,6 +6,7 @@ namespace PersonalMoney.dto.CategoryDto
     [AutoGenerateBuilder]
     public class ProcessBudget
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public bool IsIncome { get; set; }
         public decimal Budget { get; set; }
@@ -22,5 +23,15 @@ namespace PersonalMoney.dto.CategoryDto
         public decimal BudgetExpense { get; set; }
     }
 
+    public class DistributeElement
+    {
+        public int Id { get; set; }
+        public decimal Budget { get; set;}
+    }
+
+    public class DistributeRequest
+    {
+        public List<DistributeElement> DistributeList { get; set; } = new List<DistributeElement>();
+    }
 
 }

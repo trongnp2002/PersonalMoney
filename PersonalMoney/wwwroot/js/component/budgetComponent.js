@@ -55,16 +55,27 @@ export const generateBudgetJunGoalsTableBody = (data) =>{
     generateChartProcess(data.processBudgets);
     generateChartSpent(data)
     const report = $("#budget_status_report");
+    report.empty();
     report.append(`<b>$${data.totalExpense}</b> out of <b>$${data.budgetExpense}</b>`);
 }
 
 export const generateChartBudget = (data) => {
+    const div = $('#budget_chart_div');
+    div.empty();
+    const canva = $('<canvas></canvas>')
+    canva.attr('id', 'budget_chart');
+    div.append(canva);
     const model = getDataModelBudget(data);
     pieChart("budget_chart", 273, model);
 }
 
 
 export const generateChartProcess = (data) => {
+    const div = $('#budget-process-chart-div');
+    div.empty();
+    const canva = $('<canvas></canvas>')
+    canva.attr('id', 'budget-process-chart');
+    div.append(canva);
     const model = getDataModelProcess(data);
     console.log("process| ", model)
 
@@ -72,6 +83,11 @@ export const generateChartProcess = (data) => {
 }
 
 export const generateChartSpent = (data) => {
+    const div = $('#budget-process__spent-div');
+    div.empty();
+    const canva = $('<canvas></canvas>')
+    canva.attr('id', 'budget-process__spent');
+    div.append(canva);
     const model = getDataModelSpent(data);
     console.log("spent| ", model)
     doughutChart("budget-process__spent",333,model);
