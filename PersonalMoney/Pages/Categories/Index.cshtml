@@ -1,4 +1,4 @@
-﻿@page "/category"
+﻿@page "/categories"
 @model PersonalMoney.Pages.Categories.IndexModel
 @{
     <nav>
@@ -34,10 +34,10 @@
                                         <td>
                                             <div class="action-buttons">
                                                 <button type="button" class="btn btn-warning">
-                                                    <a style="color:white" href="/Categories/edit?id=@category.Id">Edit</a>
+                                                    <a style="color:white" href="/categories/edit?id=@category.Id">Edit</a>
                                                 </button>
                                                 <button type="button" class="btn btn-danger">
-                                                    <a style="color:white" href="/Categories/delete/@category.Id">Delete</a>
+                                                    <a style="color:white" href="/categories/delete/@category.Id">Delete</a>
                                                 </button>
                                             </div>
                                         </td>
@@ -45,7 +45,6 @@
                                 }
                             </tbody>
                         </table>
-
                         <div class="card-body">
                             <div class="pagination">
                                 @if (Model.TotalPages > 1)
