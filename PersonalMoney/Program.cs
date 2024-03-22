@@ -6,6 +6,7 @@ using PersonalMoney.Services;
 using ExceptionHandling.CustomMiddlewares;
 using NLog;
 using NLog.Web;
+using PersonalMoney.Hubs;
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 logger.Debug("init main");
 
@@ -32,8 +33,8 @@ try
     builder.Services.AddOptions();
     builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
     builder.Services.AddSingleton<IEmailSender, SendMailService>();
-
-    builder.Services.AddIdentity<User, IdentityRole>()
+    builder.Services.AddSignalR();
+    builder.Services.AddIdentity<User, Role>()
         .AddEntityFrameworkStores<PersonalMoneyContext>()
         .AddDefaultTokenProviders();
     builder.Services.Configure<IdentityOptions>(options =>
@@ -76,11 +77,14 @@ try
         op.ClientId = fConfig["ClientId"];
         op.ClientSecret = fConfig["ClientSecret"];
         op.CallbackPath = "/signin-facebook";
-    })
-    ;
+    });
+
 
     var app = builder.Build();
-
+    using (var scope = app.Services.CreateScope())
+    {
+        await RolesData.SeedRoles(scope.ServiceProvider);
+    }
     // Configure the HTTP request pipeline.
     if (!app.Environment.IsDevelopment())
     {
@@ -89,18 +93,22 @@ try
         app.UseHsts();
     }
 
+
+
+
+    app.UseHttpsRedirection();
+    app.UseStaticFiles();
     app.UseRouting();
     app.UseAuthentication();
     app.UseAuthorization();
     app.UseEndpoints(endpoints => endpoints.MapRazorPages());
     app.UseSession();
-    app.UseHttpsRedirection();
-    app.UseStaticFiles();
     app.UseMiddleware<ExceptionHandlingMiddleware>();
     // app.UseStatusCodePagesWithRedirects("/error/{0}");
     app.MapRazorPages();
-
+    app.MapHub<SignalrServer>("/ws-server");
     app.Run();
+
 }
 catch (Exception exception)
 {

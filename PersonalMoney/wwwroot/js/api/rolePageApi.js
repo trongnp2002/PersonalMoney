@@ -14,4 +14,9 @@ export const onGetData = async()=>{
     return await fetchOnGet(getDataUrl)
 }
 
+export const onPostDelete = async(data) =>{
+    const deleteUrl = new URL(ROLEPAGE.POSTDELETE);
+    return await fetchOnPost(deleteUrl,data);
+}
+
 

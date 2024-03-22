@@ -17,7 +17,8 @@ namespace PersonalMoney.Models
         public string Name { get; set; } = null!;
         public bool IsIncome { get; set; }
         public decimal Budget { get; set; }
-
+        
+        public DateTime? LastUpdate { get; set; }
         public virtual User User { get; set; } = null!;
         public virtual ICollection<Transaction> Transactions { get; set; }
     }

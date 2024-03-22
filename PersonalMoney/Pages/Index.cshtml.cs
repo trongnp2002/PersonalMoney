@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PersonalMoney.Models;
@@ -15,6 +16,9 @@ namespace PersonalMoney.Pages
     [Authorize]
     public class IndexModel : BasePageModel
     {
+        public IndexModel(PersonalMoneyContext dbContext, UserManager<User> userManager) : base(dbContext, userManager)
+        {
+        }
 
         [BindProperty]
         public List<Wallet> ListWallets { get; set; }
@@ -31,9 +35,6 @@ namespace PersonalMoney.Pages
         public decimal[] monthlyIncomeTotals { get; set; }
         [BindProperty]
         public decimal[] monthlyExpenseTotals { get; set; }
-        public IndexModel( PersonalMoneyContext dbContext) : base( dbContext)
-        {
-        }
 
         public IActionResult OnGet()
         {

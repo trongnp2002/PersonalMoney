@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using PersonalMoney.Models;
+using PersonalMoney.Models.enums;
 
 namespace PersonalMoney.Areas.Identity.Pages.Account
 {
@@ -31,7 +32,7 @@ namespace PersonalMoney.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly PersonalMoneyContext _personalMoneyContext;
-        private RoleManager<IdentityRole> _roleManager;
+        private RoleManager<Role> _roleManager;
 
         public RegisterModel(
             UserManager<User> userManager,
@@ -40,7 +41,7 @@ namespace PersonalMoney.Areas.Identity.Pages.Account
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
             PersonalMoneyContext personalMoneyContext,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<Role> roleManager)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -128,6 +129,13 @@ namespace PersonalMoney.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
+                var checkEmail = await _userManager.FindByEmailAsync(Input.Email);
+                if (checkEmail != null)
+                {
+                    await _userManager.AddPasswordAsync(checkEmail, Input.Password);
+                    await _signInManager.SignInAsync(checkEmail, isPersistent: false);
+                    return LocalRedirect(returnUrl);
+                }
                 var user = CreateUser();
                 user.FirstName = Input.FirstName; user.LastName = Input.LastName;
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
@@ -160,9 +168,19 @@ namespace PersonalMoney.Areas.Identity.Pages.Account
                         return LocalRedirect(returnUrl);
                     }
                 }
+
+
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
+                }
+                var resultRole = await _userManager.AddToRoleAsync(user, UserRoles.USER.ToString());
+                if (!resultRole.Succeeded)
+                {
+                    foreach (var error in resultRole.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
                 }
             }
 
@@ -199,13 +217,7 @@ namespace PersonalMoney.Areas.Identity.Pages.Account
 
         private async Task<User> CheckAndCreateRole(User user)
         {
-            var userRoleExists = await _roleManager.RoleExistsAsync("User");
-            if (!userRoleExists)
-            {
-                await _roleManager.CreateAsync(new IdentityRole("User"));
-            }
             await _userManager.AddToRoleAsync(user, "User");
-
             return user;
         }
     }

@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using PersonalMoney.Models;
+using PersonalMoney.Models.enums;
 
 namespace PersonalMoney.Areas.Identity.Pages.Account
 {
@@ -180,48 +181,67 @@ namespace PersonalMoney.Areas.Identity.Pages.Account
                         return Page();
                     }
                 }
-                    _logger.LogInformation("🚩 | user: ", registedUser == null ? "null" : registedUser.Email);
-                    _logger.LogInformation("🚩 | externalUser: ", externalUser == null ? "null" : externalUser.Email);
+
 
                 if ((externalUser != null) && (registedUser == null))
                 {
                     ModelState.AddModelError(string.Empty, "Does not support creating new accounts with different emails from external services!");
                     return Page();
                 }
-                // if((externalUser == null) && (externalEmail == Input.Email)) {
-                //      var newUser = new Models.User() {
-                //         UserName = externalEmail,
-                //         Email = externalEmail
-                //     };
+                if ((externalUser == null) && (externalEmail == Input.Email))
+                {
+                    var newUser = new Models.User()
+                    {
+                        UserName = externalEmail,
+                        Email = externalEmail,
+                        FirstName = String.IsNullOrEmpty(info.Principal.FindFirstValue(ClaimTypes.GivenName)) ? "":info.Principal.FindFirstValue(ClaimTypes.GivenName) ,
+                        LastName = String.IsNullOrEmpty(info.Principal.FindFirstValue(ClaimTypes.Surname))? "":info.Principal.FindFirstValue(ClaimTypes.Surname),
+                    };
 
-                //     var resultNewUser = await _userManager.CreateAsync(newUser);
-                //     if (resultNewUser.Succeeded)
-                //     {
-                //         await _userManager.AddLoginAsync(newUser, info);
-                //         var code = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
-                //         await _userManager.ConfirmEmailAsync(newUser, code);
+                    var resultNewUser = await _userManager.CreateAsync(newUser);
 
-                //         await _signInManager.SignInAsync(newUser, isPersistent: false);
+                    if (resultNewUser.Succeeded)
+                    {
+                        await _userManager.AddLoginAsync(newUser, info);
+                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
+                        await _userManager.ConfirmEmailAsync(newUser, code);
+                        await _userManager.AddToRoleAsync(newUser, "User");
+                        await _signInManager.SignInAsync(newUser, isPersistent: false);
 
-                //         return LocalRedirect(returnUrl);
+                        return LocalRedirect(returnUrl);
 
-                //     }
-                //     else
-                //     {
-                //         ModelState.AddModelError(string.Empty, "Cannot create new account!");
-                //         return Page();   
-                //     }
-                // }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Cannot create new account!");
+                        return Page();
+                    }
+                }
                 var user = CreateUser();
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                user.FirstName = info.Principal.FindFirstValue(ClaimTypes.GivenName);
+                user.LastName = info.Principal.FindFirstValue(ClaimTypes.Surname);
+                await _userManager.AddToRoleAsync(user, "User");
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
                     result = await _userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)
                     {
+                        var resultRole = await _userManager.AddToRoleAsync(user, UserRoles.USER.ToString());
+                        if (!resultRole.Succeeded)
+                        {
+                            foreach (var error in resultRole.Errors)
+                            {
+                                ModelState.AddModelError(string.Empty, error.Description);
+                            }
+                            ProviderDisplayName = info.ProviderDisplayName;
+                            ReturnUrl = returnUrl;
+                            return Page();
+                        }
+
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
 
                         var userId = await _userManager.GetUserIdAsync(user);
@@ -246,6 +266,7 @@ namespace PersonalMoney.Areas.Identity.Pages.Account
                         return LocalRedirect(returnUrl);
                     }
                 }
+
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);

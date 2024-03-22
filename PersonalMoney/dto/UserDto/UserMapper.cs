@@ -13,7 +13,8 @@ namespace PersonalMoney.dto.UserDto
     {
         public UserMapper()
         {
-            CreateMap<User, UserDTO.AdminResponse>().ForMember(dest => dest.LockoutEnd, opt => opt.MapFrom(src => src.LockoutEnd.Value.ToString("dd/MM/yyyy")));
+            CreateMap<User, UserDTO.AdminResponse>().ForMember(dest => dest.LockoutEnd, opt => opt.MapFrom(src => src.LockoutEnd.Value.ToString("dd/MM/yyyy")))
+                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Roles.First().Name));
         }
     }
 }
