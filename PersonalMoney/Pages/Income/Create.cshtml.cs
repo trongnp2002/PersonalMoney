@@ -38,7 +38,6 @@ namespace PersonalMoney.Pages.Income
             Transaction.UserId = user.Id;
             Transaction.CategoryId = SelectedCategoryId;
             Transaction.WalletId = int.Parse(WalletId);
-            Transaction.DateOfTransaction = DateTime.Now;
             _context.Transactions.Add(Transaction);
             _context.SaveChanges();
             return Redirect("/income");

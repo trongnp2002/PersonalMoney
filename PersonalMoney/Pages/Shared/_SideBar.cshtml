@@ -30,24 +30,11 @@
             <ul class="list-unstyled navbar__list">
             <li class='has-sub @(ViewContext.HttpContext.Request.Path.Value.Contains("admin") ? "active":"")'>
                     <a class="js-arrow" href="/admin">
-                        <i class="fas fa-copy"></i>Admin 
+                        <i class="fas fa-copy"></i>Admin Page
                     </a>
-                    <ul class="list-unstyled navbar__sub-list js-sub-list">
-                        <li>
-                            <a href="/admin/">
-                                <i class="fab fa-flickr"></i>Manager User
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/admin/roles">
-                                <i class="fas fa-comment-alt"></i>ManagerRole
-                            </a>
-                        </li>
-     
-                    </ul>
                 </li>
-            <li class='@(ViewContext.HttpContext.Request.Path.Value.Length == 0 ? "active":"")'>
-                    <a  href="/">
+                <li class="active has-sub">
+                    <a href="/">
                         <i class="fas fa-tachometer-alt"></i>Overview
                     </a>
                 </li>
@@ -57,12 +44,12 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                <a href="/income">
                         <i class="fas fa-shopping-basket"></i>Income
                     </a>
                 </li>
-                <li class="has-sub">
-                    <a class="js-arrow" href="#">
+                <li >
+                <a href="/expense">
                         <i class="fas fa-trophy"></i>Expense
                     </a>
                 </li>
@@ -81,7 +68,7 @@
                     </a>
                     <ul class="list-unstyled navbar__sub-list js-sub-list">
                         <li>
-                            <a href="/ListCategory">
+                        <a href="/categories">
                                 <i class="fab fa-flickr"></i>Categories
                             </a>
                         </li>

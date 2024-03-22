@@ -35,6 +35,11 @@
                 </select>
             </div>
             <div class="form-group">
+                <label>Date</label>
+                <input type="date" class="form-control" asp-for="@Model.Expense.DateOfTransaction">
+                <span asp-validation-for="@Model.Expense.DateOfTransaction class=" text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
