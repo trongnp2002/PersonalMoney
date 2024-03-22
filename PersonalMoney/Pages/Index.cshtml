@@ -8,13 +8,10 @@
 <section class="statistic">
     <div class="section__content section__content--p30">
         <div class="container-fluid">
-            <button class="au-btn au-btn-icon au-btn--green m-b-20">
-                <a style="color: white" href="/wallet/create" class="zmdi zmdi-plus">Add Wallet</a>
-            </button>
             <div class="row">
                 <div class="col-md-6 col-lg-3">
                     <div class="statistic__item">
-                        <h2 class="number">10,368</h2>
+                        <h2 class="number">@Model.totalIncomeInMonth</h2>
                         <span class="desc">income in month</span>
                         <div class="icon">
                             <i class="zmdi zmdi-account-o"></i>
@@ -23,7 +20,7 @@
                 </div>
                 <div class="col-md-6 col-lg-3">
                     <div class="statistic__item">
-                        <h2 class="number">388,688</h2>
+                        <h2 class="number">@Model.totalExpenseInMonth</h2>
                         <span class="desc">spending in month</span>
                         <div class="icon">
                             <i class="zmdi zmdi-shopping-cart"></i>
@@ -32,7 +29,7 @@
                 </div>
                 <div class="col-md-6 col-lg-3">
                     <div class="statistic__item">
-                        <h2 class="number">1,086</h2>
+                        <h2 class="number">@Model.totalSavingInMonth</h2>
                         <span class="desc">saving money in month</span>
                         <div class="icon">
                             <i class="zmdi zmdi-calendar-note"></i>
@@ -41,7 +38,7 @@
                 </div>
                 <div class="col-md-6 col-lg-3">
                     <div class="statistic__item">
-                        <h2 class="number">$1,060,386</h2>
+                        <h2 class="number">@Model.totalMoney</h2>
                         <span class="desc">total money</span>
                         <div class="icon">
                             <i class="zmdi zmdi-money"></i>
@@ -93,7 +90,7 @@
                             </div>
                         </div>
                         <div class="recent-report__chart">
-                            <canvas id="recent-rep2-chart"></canvas>
+                            <canvas id="recent-rep2-chart-1"></canvas>
                         </div>
                     </div>
                     <!-- END RECENT REPORT 2             -->
@@ -151,8 +148,11 @@
                 <div class="col-xl-6">
                     <!-- USER DATA-->
                     <div class="user-data m-b-40">
-                        <h3 class="title-3 m-b-30">
-                            <i class="zmdi zmdi-account-calendar"></i>Wallets
+                        <h3 class="title-3 m-b-30 d-flex justify-content-between align-items-center">
+                            <i class="zmdi zmdi-account-calendar">Wallets</i>
+                            <button class="au-btn au-btn-icon au-btn--green ">
+                                <a style="color: white; font-size: 16px" href="/wallet/create" class="zmdi zmdi-plus">Add Wallet</a>
+                            </button>
                         </h3>
                         <div class="table-responsive table-data">
                             <table class="table">
@@ -166,7 +166,7 @@
                                 <tbody id="walletTableBody">
                                     @foreach (var wallet in Model.ListWallets)
                                     {
-                                        <tr>
+                                        <tr style="color: @(wallet.Balance < 0 ? "red" : "")">
                                             <td>@wallet.Name</td>
                                             <td>@wallet.Balance</td>
                                             <td class="d-flex justify-content-center">
@@ -192,4 +192,96 @@
 </section>
 
 <script>
+    try {
+
+        // Recent Report 2
+        const bd_brandProduct2 = 'rgba(0,181,233,0.9)'
+        const bd_brandService2 = 'rgba(0,173,95,0.9)'
+        const brandProduct2 = 'rgba(0,181,233,0.2)'
+        const brandService2 = 'rgba(0,173,95,0.2)'
+
+        var incomeInMonth = @Html.Raw(Json.Serialize(ViewData["IncomeInMonth"]));
+        var expenseInMonth = @Html.Raw(Json.Serialize(ViewData["ExpenseInMonth"]));
+
+        var ctx = document.getElementById("recent-rep2-chart-1");
+        if (ctx) {
+            ctx.height = 230;
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                    datasets: [
+                        {
+                            label: 'My First dataset',
+                            backgroundColor: brandService2,
+                            borderColor: bd_brandService2,
+                            pointHoverBackgroundColor: '#fff',
+                            borderWidth: 0,
+                            data: incomeInMonth
+
+                        },
+                        {
+                            label: 'My Second dataset',
+                            backgroundColor: brandProduct2,
+                            borderColor: bd_brandProduct2,
+                            pointHoverBackgroundColor: '#fff',
+                            borderWidth: 0,
+                            data: expenseInMonth
+
+                        }
+                    ]
+                },
+                options: {
+                    maintainAspectRatio: true,
+                    legend: {
+                        display: false
+                    },
+                    responsive: true,
+                    scales: {
+                        xAxes: [{
+                            gridLines: {
+                                drawOnChartArea: true,
+                                color: '#f2f2f2'
+                            },
+                            ticks: {
+                                fontFamily: "Poppins",
+                                fontSize: 12
+                            }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true,
+                                maxTicksLimit: 5,
+                                stepSize: 100,
+                                max: 700,
+                                fontFamily: "Poppins",
+                                fontSize: 12
+                            },
+                            gridLines: {
+                                display: true,
+                                color: '#f2f2f2'
+
+                            }
+                        }]
+                    },
+                    elements: {
+                        point: {
+                            radius: 0,
+                            hitRadius: 10,
+                            hoverRadius: 4,
+                            hoverBorderWidth: 3
+                        },
+                        line: {
+                            tension: 0
+                        }
+                    }
+
+
+                }
+            });
+        }
+
+    } catch (error) {
+        console.log(error);
+    }
 </script>

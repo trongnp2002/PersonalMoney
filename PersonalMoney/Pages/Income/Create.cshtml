@@ -23,6 +23,11 @@
             }
         </select>
     </div>
+    <div class="form-group">
+        <label>Date</label>
+        <input type="date" class="form-control" name="Transaction.DateOfTransaction">
+        <span asp-validation-for="@Model.Transaction.DateOfTransaction class="text-danger"></span>
+    </div>
     <button type="submit" class="btn btn-primary">Add Income</button>
     <a href="/income">Back to List</a>
 </form>

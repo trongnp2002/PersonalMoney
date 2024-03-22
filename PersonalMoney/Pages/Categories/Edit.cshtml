@@ -1,0 +1,27 @@
+﻿@page "/categories/edit"
+@model PersonalMoney.Pages.Categories.EditModel
+@{
+    ViewData["Title"] = "Edit Category";
+}
+<div class="confirmation-container" style="margin: 50px auto 50px">
+    <h3>Edit Category</h3>
+    <div class="form-container">
+        <form method="post">
+            <div class="form-group">
+                <input type="hidden" asp-for="EditCategory.Id" />
+                <label for="editCategoryName">Category Name</label>
+                <input asp-for="EditCategory.Name" class="form-control" />
+                <span asp-validation-for="EditCategory.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="editIsIncome">Is Income</label>
+                <select asp-for="EditCategory.IsIncome" class="form-control">
+                    <option value="true">Income</option>
+                    <option value="false">Expense</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-danger">Save</button>
+            <a href="/ListCategory" class="btn btn-secondary">Back to List</a>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+﻿@page "/categories/create"
+@model PersonalMoney.Pages.Categories.CreateModel
+@{
+    ViewData["Title"] = "Add new Category";
+}
+
+<div class="confirmation-container" style="margin: 50px auto 50px">
+    <h3>Add New Category</h3>
+    <div class="form-container">
+        <form method="post">
+            <div class="form-group">
+                <label for="categoryName">Category Name</label>
+                <input type="text" class="form-control" id="categoryName" name="AddCategory.Name" required>
+                <span asp-validation-for="AddCategory.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="isIncome">Category Type</label>
+                <select class="form-control" id="isIncome" name="AddCategory.IsIncome">
+                    <option value="True">Income</option>
+                    <option value="False">Expense</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-danger">Create</button>
+            <a href="/ListCategory" class="btn btn-secondary">Back to List</a>
+        </form>
+    </div>
+</div>
