@@ -1,12 +1,12 @@
 ﻿@page "/categories"
 @model PersonalMoney.Pages.Categories.IndexModel
+@section ButtonContent {
+    <button class="au-btn au-btn-icon au-btn--green m-3">
+        <a style="color: white" href="/Categories/create" class="zmdi zmdi-plus">&nbsp; Add new</a>
+    </button>
+}
 @{
-    <nav>
-        <ol class="breadcrumb" style="cursor: pointer;">
-            <li class="breadcrumb-item">Settings</li>
-            <li class="breadcrumb-item active"><a href="/category">Categories</a></li>
-        </ol>
-    </nav>
+
     <div class="main-content" style="padding-top: 16px; min-height: 100vh;">
         <div class="section__content section__content--p30">
             <div class="container-fluid">
@@ -14,9 +14,6 @@
                     <div class="col-md-12">
                         <h3 class="title-5 m-b-35">Category List</h3>
                         <hr>
-                        <button class="au-btn au-btn-icon au-btn--green m-3">
-                            <a style="color: white" href="/Categories/create" class="zmdi zmdi-plus">Add new Category</a>
-                        </button>
                         <table class="table table-hover text-center">
                             <thead>
                                 <tr>
@@ -51,7 +48,7 @@
                                 {
                                     @for (int i = 1; i <= Model.TotalPages; i++)
                                     {
-                                        <a href="?page=@i" class="btn @(i == Model.CurrentPage ? "btn-primary" : "btn-secondary")">@i</a>
+                                        <a href="?pageNum=@i" class="btn @(i == Model.CurrentPage ? "btn-primary" : "btn-secondary")">@i</a>
                                     }
                                 }
                             </div>

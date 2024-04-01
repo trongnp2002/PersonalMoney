@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PersonalMoney.Models;
 
 namespace PersonalMoney.Pages.Wallets
 {
+    [Authorize]
     public class DeleteModel : PageModel
     {
         private readonly PersonalMoneyContext _context;
@@ -40,7 +42,7 @@ namespace PersonalMoney.Pages.Wallets
                     _context.Wallets.Remove(p);
                     _context.SaveChanges();
                     StatusMessage = "Deleted a Wallet successfully!";
-                    return Redirect("/Index");
+                    return Redirect("/");
                 }
             }
             return NotFound();

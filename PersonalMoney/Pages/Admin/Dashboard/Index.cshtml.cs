@@ -9,9 +9,11 @@ using Microsoft.EntityFrameworkCore;
 using PersonalMoney.Models.enums;
 using Microsoft.AspNetCore.SignalR;
 using PersonalMoney.Hubs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PersonalMoney.Pages.Admin
 {
+    [Authorize(Roles ="ADMIN")]
     public class IndexModel : AdminBasePageModel
     {
         public List<UserDTO.AdminResponse> GroupUsers { set; get; }
@@ -68,9 +70,19 @@ namespace PersonalMoney.Pages.Admin
             }
             string id = lockout.Id.Trim();
             var user = await _personalMoneyContext.Users.FirstOrDefaultAsync(u => u.Id.Equals(id)) ?? throw new ApplicationException("User not exist!");
-            user.LockoutEnd = null;
+            if (!user.LockoutEnabled)
+            {
+                user.LockoutEnd = null;
+                user.AccessFailedCount = 0;
+
+
+            }
+            else
+            {
+                user.LockoutEnd = DateTime.MaxValue;
+                user.AccessFailedCount = 5;
+            }
             user.LockoutEnabled = !user.LockoutEnabled;
-            user.AccessFailedCount = 0;
             await _personalMoneyContext.SaveChangesAsync();
             return ResponseOK();
         }
@@ -79,11 +91,11 @@ namespace PersonalMoney.Pages.Admin
         {
             var users = await _userManager.GetUsersInRoleAsync("USER");
             return _mapper.Map<List<UserDTO.AdminResponse>>(users.Where(u => (
-                (String.IsNullOrEmpty(u.Address) || u.Address.Contains(Search))
-            || (String.IsNullOrEmpty(u.FirstName) || u.FirstName.Contains(Search))
-            || (String.IsNullOrEmpty(u.LastName)||u.LastName.Contains(Search))
-            || (String.IsNullOrEmpty(u.Email) ||u.Email.Contains(Search))
-            || (String.IsNullOrEmpty(u.PhoneNumber) ||u.PhoneNumber.Contains(Search))))
+             String.IsNullOrEmpty(Search) ||(!String.IsNullOrEmpty(u.Address) && u.Address.Contains(Search))
+            || (!String.IsNullOrEmpty(u.FirstName) && u.FirstName.Contains(Search))
+            || (!String.IsNullOrEmpty(u.LastName) &&u.LastName.Contains(Search))
+            || (!String.IsNullOrEmpty(u.Email) && u.Email.Contains(Search))
+            || (!String.IsNullOrEmpty(u.PhoneNumber) && u.PhoneNumber.Contains(Search))))
             .ToList());
         }
 

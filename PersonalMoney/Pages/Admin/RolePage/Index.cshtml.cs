@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -21,6 +22,7 @@ using PersonalMoney.Models.Response;
 
 namespace PersonalMoney.Pages.Admin.RolePage
 {
+    [Authorize(Roles = "ADMIN")]
     public class IndexModel : AdminBasePageModel
     {
         private readonly ILogger<IndexModel> _logger;
@@ -97,7 +99,7 @@ namespace PersonalMoney.Pages.Admin.RolePage
                 throw new ApplicationException(string.Join(", ", errorMessages));
             }
             var role = await _roleManager.FindByIdAsync(roleUpdate.Id) ?? throw new ApplicationException("Role Id not found");
-            if (role.Name.Equals("USER") || role.Name.Equals("ADMIN")) throw new ApplicationException("This role cannot be update!");
+            if (role.Name.Equals("STAFF") || role.Name.Equals("USER") || role.Name.Equals("ADMIN")) throw new ApplicationException("This role cannot be update!");
             role.Name = roleUpdate.Name.ToUpper();
             var result = await _roleManager.UpdateAsync(role);
             if (!result.Succeeded)
@@ -115,7 +117,7 @@ namespace PersonalMoney.Pages.Admin.RolePage
             {
                 throw new ApplicationException("Name cannot be null or empty!");
             }
-            if (roleDelete.Name.Equals("USER") || roleDelete.Name.Equals("ADMIN")) throw new ApplicationException("This role cannot be delete!");
+            if (roleDelete.Name.Equals("STAFF") || roleDelete.Name.Equals("USER") || roleDelete.Name.Equals("ADMIN")) throw new ApplicationException("This role cannot be delete!");
             var role = await _roleManager.FindByNameAsync(roleDelete.Name) ?? throw new ApplicationException("Role Id not found!");
             var result = await _roleManager.DeleteAsync(role);
             if (!result.Succeeded)

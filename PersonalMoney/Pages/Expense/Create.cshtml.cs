@@ -1,15 +1,18 @@
 using Humanizer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.CodeAnalysis.Differencing;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Org.BouncyCastle.Bcpg;
 using Org.BouncyCastle.Ocsp;
 using Org.BouncyCastle.Utilities;
 using PersonalMoney.Models;
 namespace PersonalMoney.Pages.Expense
 {
+    [Authorize]
     public class CreateModel : PageModel
     {
         [BindProperty]
@@ -30,15 +33,30 @@ namespace PersonalMoney.Pages.Expense
             Categories = new List<Category>();
         }
 
-        public IActionResult OnGet()
+        public IActionResult OnGet(string? error)
         {
+            if (!String.IsNullOrEmpty(error))
+            {
+                TempData["StatusMessage"] = error;
+            }
             var user = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
             Categories = _context.Categories.Where(c => c.IsIncome == false && c.UserId == user.Id.ToString()).ToList();
             return Page();
         }
         public IActionResult OnPost()
         {
+            if(String.IsNullOrEmpty(WalletId)||WalletId.Trim().Equals("0"))
+            {
+              return  Redirect("/expense/create/?error=Wallet id cannot be empty or null!");
+            }
             var user = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+
+            if (!ModelState.IsValid)
+            {
+                user = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                Categories = _context.Categories.Where(c => c.IsIncome == false && c.UserId == user.Id.ToString()).ToList();
+                return Page();
+            }
             pay(-Transaction.Amount);
             Transaction.UserId = user.Id;
             Transaction.CategoryId = SelectedCategoryId;

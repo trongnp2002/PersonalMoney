@@ -2,9 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Identity;
 using PersonalMoney.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PersonalMoney.Pages.Categories
 {
+    [Authorize]
     public class CreateModel : PageModel
     {
         [BindProperty]

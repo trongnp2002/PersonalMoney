@@ -3,20 +3,20 @@ import { pageModel } from "../const/model.js";
 import { createPagination} from "../component/pagination.js";
 
 export const addOnClickToPage = () => {
-    $('.btn-pagination-page').click(function () {
+    $('.btn-pagination-page').click(async function () {
         var text = $(this).text();
-        handlerOnClickToPage(text);
+        await handlerOnClickToPage(text);
     });
-    $('.btnNext').click(function(){
-        handlerOnClickToPage(pageModel.pageNum+1);
+    $('.btnNext').click(async function () {
+        await handlerOnClickToPage(pageModel.pageNum + 1);
     })
-    $('.btnPrev').click(function(){
-        handlerOnClickToPage(pageModel.pageNum-1);
+    $('.btnPrev').click(async function () {
+        await handlerOnClickToPage(pageModel.pageNum - 1);
     })
     console.log(pageModel.pageNum);
 }
 
-export const addOnChangeLockout = () =>{
+export const addOnChangeLockout = async () =>{
     $('.admin_switch').on("change",async function(){
         const checkbox = $(this);
         const userId = checkbox.data('userid');
@@ -24,21 +24,19 @@ export const addOnChangeLockout = () =>{
         const data = {id:userId};
         console.log("OnchangeData >>",data)
         await onUpdateLockout(data).then(
-            response =>{
-                if(response.success){
-
-                }else{
-                   
-                    setTimeout(()=> checkbox.prop('checked', !isChecked),1000)
+             (response) =>{
+                if(response.success === true){
+                } else {
+                     setTimeout(() => checkbox.prop('checked', !isChecked), 1000)
                 }
             }
-        );
+        ).finally();
     })
 }
 
 const handlerOnClickToPage = async (page) => {
     pageModel.pageNum = page;
-    onHandleChange();
+   await onHandleChange();
 }
 
 export const onHandleChange = async () => {

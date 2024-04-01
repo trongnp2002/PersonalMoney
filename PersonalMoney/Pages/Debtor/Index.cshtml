@@ -5,6 +5,13 @@
     ViewData["Title"] = "List debtors";
     var lstDebtors = ViewData["lstDebtors"] as List<PersonalMoney.Models.Debtor>;
 }
+@section ButtonContent {
+    <button class="au-btn au-btn-icon au-btn--green m-3 align-items-center">
+        <a href="/debtor/create" class="au-btn au-btn-icon au-btn--green au-btn--small px-2">
+            <i class="zmdi zmdi-plus"></i>add new 
+        </a>
+    </button>
+}
 
 <style>
     .table-data2 th:nth-child(2),
@@ -75,9 +82,7 @@
                             </form>
                         </div>
                         <div class="table-data__tool-right">
-                            <a href="/debtor/create" class="au-btn au-btn-icon au-btn--green au-btn--small">
-                                <i class="zmdi zmdi-plus"></i>add new debtor
-                            </a>
+                         
                         </div>
                     </div>
                     <div class="table-responsive table-responsive-data2">

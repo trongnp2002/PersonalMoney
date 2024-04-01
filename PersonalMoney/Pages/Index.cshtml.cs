@@ -38,11 +38,13 @@ namespace PersonalMoney.Pages
 
         public IActionResult OnGet()
         {
-            ListWallets = _dbContext.Wallets.ToList();
-            getTotalIncomeAndExpenseInMonth();
-            getMonthlyTotals();
-            getTotalMoney();
-            getTotalSaving();
+            var user = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+            ListWallets = _dbContext.Wallets
+                .Where(u=>u.UserId.Equals(user.Id)).ToList();
+            getTotalIncomeAndExpenseInMonth(user.Id);
+            getMonthlyTotals(user.Id);
+            getTotalMoney(user.Id);
+            getTotalSaving(user.Id);
             return Page();
         }
 
@@ -57,11 +59,11 @@ namespace PersonalMoney.Pages
             return Page();
         }
 
-        public void getMonthlyTotals()
+        public void getMonthlyTotals(string id)
         {
             var monthlyIncome = _dbContext.Transactions
                 .Include(t=> t.Category)
-                .Where(t=>t.Category.IsIncome==true)
+                .Where(t=>t.Category.IsIncome==true && t.UserId.Equals(id))
                 .GroupBy(t => new { t.DateOfTransaction.Year, t.DateOfTransaction.Month })
                 .Select(g => new
                 {
@@ -80,7 +82,7 @@ namespace PersonalMoney.Pages
             }
             var monthlyExpense = _dbContext.Transactions
                 .Include(t => t.Category)
-                .Where(t => t.Category.IsIncome == false)
+                .Where(t => t.Category.IsIncome == false && t.UserId.Equals(id))
                 .GroupBy(t => new { t.DateOfTransaction.Year, t.DateOfTransaction.Month })
                 .Select(g => new
                 {
@@ -103,11 +105,12 @@ namespace PersonalMoney.Pages
             ViewData["ExpenseInMonth"] = monthlyExpenseTotals;
         }
 
-        public void getTotalIncomeAndExpenseInMonth()
+        public void getTotalIncomeAndExpenseInMonth(string id)
         {
             listTransactionInMonth = new List<Transaction>();
             var currentMonth = DateTime.Now.Month;
-            listTransactionInMonth = _dbContext.Transactions.Include(c=> c.Category).Where(t=>t.DateOfTransaction.Month == currentMonth).ToList();
+            listTransactionInMonth = _dbContext.Transactions.Include(c=> c.Category)
+                .Where(t=>t.DateOfTransaction.Month == currentMonth && t.UserId.Equals(id)).ToList();
             foreach (var transaction in listTransactionInMonth)
             {
                 if(transaction.Category.IsIncome == true)
@@ -120,11 +123,11 @@ namespace PersonalMoney.Pages
                 }
             }
         }
-        public void getTotalSaving()
+        public void getTotalSaving(string id)
         {
             totalSavingInMonth =  totalIncomeInMonth - totalExpenseInMonth;
         }
-        public void getTotalMoney()
+        public void getTotalMoney(string id)
         {
             totalMoney = 0;
             foreach(var item in ListWallets)

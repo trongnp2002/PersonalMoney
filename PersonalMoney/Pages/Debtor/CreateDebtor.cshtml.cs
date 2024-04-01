@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace PersonalMoney.Pagesg
 {
+    [Authorize]
     public class CreateDebtorModel : PageModel
     {
         private readonly PersonalMoneyContext _context;

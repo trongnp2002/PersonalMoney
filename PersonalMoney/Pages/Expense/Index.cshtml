@@ -2,37 +2,42 @@
 @model PersonalMoney.Pages.Expense.indexModel
 @using PersonalMoney.Models
 @inject PersonalMoneyContext dbContext
-@{
+@section ButtonContent {
+    <button class="au-btn au-btn-icon au-btn--green m-3 align-items-center">
+        <a style="color: white" href="/expense/create" class="zmdi zmdi-plus">&nbsp; Add New</a>
+    </button>
 }
-<h3 class="title-5 m-b-35">List of expense</h3>
-<button class="au-btn au-btn-icon au-btn--green m-3">
-    <a style="color: white" href="/expense/create" class="zmdi zmdi-plus">Add Expense</a>
-</button>
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Category</th>
-            <th>Wallet</th>
-            <th>Amount Expense</th>
-            <th>DateTime</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in @Model.Transactions)
-        {
+<div class="p-4">
+    <h3 class="title-5 m-b-35">List of expense</h3>
+
+    <table class="table table-hover">
+        <thead>
             <tr>
-                <td>@item.Title</td>
-                <td>@item.Category.Name</td>
-                <td>@item.Wallet.Name</td>
-                <td>@item.Amount</td>
-                <td>@item.DateOfTransaction.ToString("dd/MM/yyyy")</td>
-                <td>
-                    <button type="button" class="btn btn-danger"><a style="color:white" href="/expense/delete/@item.Id">Delete</a></button>
-                    <button type="button" class="btn btn-warning"><a style="color:white" href="/expense/update/@item.Id">Edit</a></button>
-                </td>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Wallet</th>
+                <th>Amount Expense</th>
+                <th>DateTime</th>
+                <th>Action</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in @Model.Transactions)
+            {
+                <tr>
+                    <td>@item.Title</td>
+                    <td>@item.Category.Name</td>
+                    <td>@item.Wallet.Name</td>
+                    <td>@item.Amount</td>
+                    <td>@item.DateOfTransaction.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        <button type="button" class="btn btn-danger"><a style="color:white" href="/expense/delete/@item.Id">Delete</a></button>
+                        <button type="button" class="btn btn-warning"><a style="color:white" href="/expense/update/@item.Id">Edit</a></button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+     

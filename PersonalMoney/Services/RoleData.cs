@@ -11,7 +11,7 @@ namespace PersonalMoney.Services
 {
     public static class RolesData
     {
-        private static readonly string[] Roles = new string[] { "ADMIN", "USER" };
+        private static readonly string[] Roles = new string[] { "ADMIN", "USER","STAFF" };
 
         public static async Task SeedRoles(IServiceProvider serviceProvider)
         {

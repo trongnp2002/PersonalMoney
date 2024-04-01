@@ -7,8 +7,8 @@ $(document).ready(
         createPagination();
         addOnClickToPage();
         addOnChangeLockout();
-        $('#btnSearch').click(() => {
+        $('#btnSearch').click(async () => {
             pageModel.search = $('#txtSearch').val();
-            onHandleChange();
+            await onHandleChange();
         })
     })

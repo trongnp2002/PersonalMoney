@@ -3,6 +3,8 @@
 @{
 }
 <h3>Create New Expense</h3>
+<partial name="_AlertMessage" />
+
 <form method="post">
     <input type="hidden" id="walletId" name="WalletId" />
     <div class="form-group">
@@ -28,7 +30,7 @@
         <input type="date" class="form-control" name="Transaction.DateOfTransaction">
         <span asp-validation-for="@Model.Transaction.DateOfTransaction class=" text-danger"></span>
     </div>
-    <button type="submit" class="btn btn-primary">Add Expense</button>
+    <button id="btnAddExpense" type="submit" class="btn btn-primary">Add Expense</button>
     <a href="/expense">Back to List</a>
 </form>
 <script>
@@ -36,4 +38,6 @@
         document.getElementById('walletId').value = localStorage.getItem('walletId');
     }
     getWalletId();
+    $('#btnAddExpense').on('click', getWalletId);
+
 </script>

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -6,6 +7,7 @@ using PersonalMoney.Models;
 
 namespace PersonalMoney.Pagesg
 {
+    [Authorize]
     public class DeleteModel : PageModel
     {
         private readonly PersonalMoneyContext _context;

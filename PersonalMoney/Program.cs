@@ -95,7 +95,8 @@ try
 
 
 
-
+    app.UseMiddleware<ExceptionHandlingMiddleware>();
+    app.UseStatusCodePagesWithRedirects("/error/{0}");
     app.UseHttpsRedirection();
     app.UseStaticFiles();
     app.UseRouting();
@@ -103,8 +104,7 @@ try
     app.UseAuthorization();
     app.UseEndpoints(endpoints => endpoints.MapRazorPages());
     app.UseSession();
-    app.UseMiddleware<ExceptionHandlingMiddleware>();
-    // app.UseStatusCodePagesWithRedirects("/error/{0}");
+   
     app.MapRazorPages();
     app.MapHub<SignalrServer>("/ws-server");
     app.Run();

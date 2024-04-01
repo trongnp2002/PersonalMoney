@@ -56,22 +56,20 @@ namespace PersonalMoney.Pages.BudgetPage
                
             }
             bool check = lastDayOfMonth.CompareTo(now) > 0;
-            bool flag = (String.IsNullOrEmpty(month) || check);
             foreach (var category in cates)
             {
                 decimal total = await _dbContext.Transactions.Include(t => t.Category).Where(t => t.CategoryId
-                    .Equals(category.Id) && t.DateOfTransaction.Month.Equals(flag ? category.LastUpdate.Value.Month :
-                    int.Parse(month))
-                    && t.DateOfTransaction.Year.Equals(flag ? category.LastUpdate.Value.Year:int.Parse(year)) && category.IsIncome.Equals(false))
+                    .Equals(category.Id) && t.DateOfTransaction.Month.Equals(check ? now.Month : lastDayOfMonth.Month)
+                    && t.DateOfTransaction.Year.Equals(check ? now.Year : lastDayOfMonth.Year) && category.IsIncome.Equals(false))
                     .SumAsync(t => t.Amount);
                 int count = await _dbContext.Transactions.Include(t => t.Category).Where(t => t.CategoryId
-                    .Equals(category.Id) && t.DateOfTransaction.Month.Equals(category.LastUpdate.Value.Month)
-                    && t.DateOfTransaction.Year.Equals(category.LastUpdate.Value.Year) && category.IsIncome.Equals(false))
+                    .Equals(category.Id) && t.DateOfTransaction.Month.Equals(check ? now.Month : lastDayOfMonth.Month)
+                    && t.DateOfTransaction.Year.Equals(check? now.Year : lastDayOfMonth.Year) && category.IsIncome.Equals(false))
                     .CountAsync();
 
                 processBudgets.Add(new ProcessBudget().AsBuilder()
                     .WithBudget(category.Budget).WithIsIncome(category.IsIncome)
-                    .WithLastUpdate(flag ? category.LastUpdate: lastDayOfMonth).WithName(category.Name)
+                    .WithLastUpdate(check ? now: lastDayOfMonth).WithName(category.Name)
                     .WithTotal(total).WithCount(count).WithId(category.Id).Build());
                 if (!category.IsIncome)
                 {
@@ -93,28 +91,42 @@ namespace PersonalMoney.Pages.BudgetPage
                     .ToList();
                 throw new ApplicationException(string.Join(", ", errorMessages));
             }
+            if (adjust.Earn.CompareTo(0)<=0 || adjust.Spend.CompareTo(0)<=0)
+            {
+                throw new ApplicationException("Earning and Spending money must be greater than 0");
+            }
             var user = await _userManager.GetUserAsync(User);
-
-            var budget = await _dbContext.Budgets.FirstOrDefaultAsync(b => b.UserId.Equals(user.Id));
-            if (budget == null)
+            try
             {
-                var newBudget = new PersonalMoney.Models.Budget().AsBuilder()
-                        .WithMonthlyEarning(adjust.Earn).WithMonthlySpending(adjust.Spend).WithUserId(user.Id)
-                        .WithAnnuallySpending(adjust.Spend * 12).WithMonthlySaving(adjust.Earn - adjust.Spend)
-                        .Build();
-                _dbContext.Budgets.Add(newBudget);
-                return ResponseCreated();
+                var budget = await _dbContext.Budgets.FirstOrDefaultAsync(b => b.UserId.Equals(user.Id));
+                if (budget == null)
+                {
+                    var newBudget = new PersonalMoney.Models.Budget().AsBuilder()
+                            .WithMonthlyEarning(adjust.Earn).WithMonthlySpending(adjust.Spend).WithUserId(user.Id)
+                            .WithAnnuallySpending(adjust.Spend * 12).WithMonthlySaving(adjust.Earn - adjust.Spend)
+                            .Build();
+                    _dbContext.Budgets.Add(newBudget);
+                    await _dbContext.SaveChangesAsync();
 
+                    return ResponseCreated();
+
+                }
+                else
+                {
+                    budget.MonthlyEarning = adjust.Earn;
+                    budget.MonthlySpending = adjust.Spend;
+                    budget.AnnuallySpending = adjust.Spend * 12;
+                    budget.MonthlySaving = adjust.Earn - adjust.Spend;
+                    _dbContext.Budgets.Update(budget);
+                    await _dbContext.SaveChangesAsync();
+
+                }
             }
-            else
+            catch (Exception ex)
             {
-                budget.MonthlyEarning = adjust.Earn;
-                budget.MonthlySpending = adjust.Spend;
-                budget.AnnuallySpending = adjust.Spend * 12;
-                budget.MonthlySaving = adjust.Earn - adjust.Spend;
-                _dbContext.Budgets.Update(budget);
+                throw new ApplicationException(ex.Message);
             }
-            await _dbContext.SaveChangesAsync();
+
             return ResponseOK();
         }
         public async Task<IActionResult> OnGetAdjust()

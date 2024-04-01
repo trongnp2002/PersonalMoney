@@ -399,8 +399,8 @@
     const brandProduct2 = 'rgba(0,181,233,0.2)'
     const brandService2 = 'rgba(0,173,95,0.2)'
 
-      var incomeInMonth = @Html.Raw(Json.Serialize(ViewData["IncomeInMonth"]));
-      var expenseInMonth = @Html.Raw(Json.Serialize(ViewData["ExpenseInMonth"]));
+      var incomeInMonth = [4, 5, 6, 7];
+      var expenseInMonth = [1, 2, 3, 4];
 
     var ctx = document.getElementById("recent-rep2-chart");
     if (ctx) {

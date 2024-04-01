@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -6,6 +7,7 @@ using System.Numerics;
 
 namespace PersonalMoney.Pages.Wallets
 {
+    [Authorize]
     public class EditModel : PageModel
     {
         private readonly PersonalMoneyContext _context;
@@ -45,7 +47,7 @@ namespace PersonalMoney.Pages.Wallets
                 _context.Wallets.Update(wallet);
                 await _context.SaveChangesAsync();
                 StatusMessage = "Update a Wallet successfully!";
-                return Redirect("/Index");
+                return Redirect("/");
             }
 
             StatusMessage = "Wallet not exists!";

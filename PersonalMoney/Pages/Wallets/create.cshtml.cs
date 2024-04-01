@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -8,6 +9,7 @@ using System.Runtime.InteropServices;
 
 namespace PersonalMoney.Pages.Wallets
 {
+    [Authorize]
     public class CreateModel : PageModel
     {
         [BindProperty]
@@ -33,7 +35,7 @@ namespace PersonalMoney.Pages.Wallets
             Wallet.IsActive = true;
             _context.Wallets.Add(Wallet);
             await _context.SaveChangesAsync();
-            return Redirect("/Index");  
+            return Redirect("/");  
         }
     }
 }

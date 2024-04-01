@@ -4,10 +4,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 using PersonalMoney.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace PersonalMoney.Pages.Categories
 {
-    public class IndexModel : PageModel
+    [Authorize]
+    public class IndexModel : BasePageModel
     {
         private const int PageSize = 5;
 
@@ -15,24 +18,26 @@ namespace PersonalMoney.Pages.Categories
         public List<Category> ListCategories { get; set; }
         public PersonalMoneyContext _context { get; set; }
 
+        [BindProperty(SupportsGet = true,Name ="pageNum")]
         public int CurrentPage { get; set; } = 1;
         public int TotalItems { get; set; }
-        public int TotalPages => (int)Math.Ceiling((double)TotalItems / PageSize);
+        public int TotalPages {get;set; }
+        public UserManager<User> userManager;
 
-        public IndexModel(PersonalMoneyContext context)
+        public IndexModel(PersonalMoneyContext dbContext, UserManager<User> userManager) : base(dbContext, userManager)
         {
-            _context = context;
         }
 
-        public IActionResult OnGet(int? page)
+        public async Task<IActionResult> OnGet(int? pageNum)
         {
-            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            var user = await _userManager.GetUserAsync(User);
 
-            IQueryable<Category> query = _context.Categories.Where(c => c.UserId == userId);
-
+            IQueryable<Category> query = _dbContext.Categories.Where(c => c.UserId == user.Id);
             TotalItems = query.Count();
 
-            CurrentPage = page ?? 1;
+            CurrentPage = pageNum ?? 1;
+
+            TotalPages = (int)Math.Ceiling((double)TotalItems / PageSize);
 
             ListCategories = query.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
 

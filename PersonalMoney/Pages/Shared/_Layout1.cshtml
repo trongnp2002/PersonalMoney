@@ -14,7 +14,7 @@
 
 
     <!-- Title Page-->
-    <title>@ViewData["Title"] - Login</title>
+    <title>@ViewData["Title"]</title>
     <script src="~/microsoft/signalr/dist/browser/signalr.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -95,7 +95,7 @@
                                     <div class="au-breadcrumb-right align-item-center d-xl-block float-left d-md-flex">
                                         @if (dbContext != null)
                                         {
-                                            var wallets = await dbContext.Wallets.ToListAsync();
+                                            var wallets = await dbContext.Wallets.Where(w=>w.UserId.Equals(UserManager.GetUserId(User))).ToListAsync();
                                             if (wallets.Any())
                                             {
                                                 <label class="d-inline">Choose Wallet: &nbsp;</label>
